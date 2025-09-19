@@ -176,7 +176,17 @@ const DrugComparator = () => {
                     <strong>{getBestOption(priceComparison)[1].source}:</strong> ${getBestOption(priceComparison)[1].price}
                   </p>
                   <p className="text-sm text-green-600 mt-1">
-                    Savings vs insurance: ${(priceComparison.priceComparison.insuranceCopay.price - getBestOption(priceComparison)[1].price).toFixed(2)}
+                    {(() => {
+                      const bestOption = getBestOption(priceComparison);
+                      const insuranceCopay = priceComparison.priceComparison?.insuranceCopay;
+                      const insurancePrice = insuranceCopay && typeof insuranceCopay.price === 'number' ? insuranceCopay.price : null;
+                      const bestPrice = bestOption && bestOption[1] && typeof bestOption[1].price === 'number' ? bestOption[1].price : null;
+                      if (insurancePrice !== null && bestPrice !== null) {
+                        return <>Savings vs insurance: ${(insurancePrice - bestPrice).toFixed(2)}</>;
+                      } else {
+                        return <>Savings vs insurance: N/A</>;
+                      }
+                    })()}
                   </p>
                 </div>
               )}
