@@ -1,0 +1,70 @@
+{
+  "authRules": {
+    "description": "Pre-authorization requirements and processing rules",
+    "rules": {
+      "advancedImaging": {
+        "cptCodes": ["70450-70498", "71250-71275", "72125-72159", "73200-73225", "74150-74178"],
+        "trigger": "always_required_except_emergency",
+        "criteria": [
+          "Clinical indication must match approved list",
+          "Conservative treatment tried and failed (if applicable)",
+          "Previous imaging reviewed if within 90 days"
+        ],
+        "expeditedCriteria": "Life-threatening condition or urgent clinical need",
+        "timeframe": {
+          "standard": "72 hours",
+          "expedited": "24 hours"
+        }
+      },
+      "inpatientAdmissions": {
+        "cptCodes": ["99221-99223", "99238-99239"],
+        "trigger": "required_non_emergency",
+        "criteria": [
+          "Two-midnight rule compliance",
+          "Medical necessity for inpatient level of care",
+          "Appropriate diagnosis supporting admission"
+        ],
+        "expeditedCriteria": "Emergency admission or urgent clinical deterioration",
+        "timeframe": {
+          "standard": "Within 1 business day of admission",
+          "expedited": "2 hours"
+        }
+      },
+      "oncologyTreatment": {
+        "cptCodes": ["96365-96368", "96413-96417", "J9000-J9999"],
+        "trigger": "required_for_new_regimens",
+        "criteria": [
+          "NCCN guideline compliance",
+          "Appropriate staging and biomarker testing",
+          "Performance status documentation",
+          "Prior treatment history if applicable"
+        ],
+        "expeditedCriteria": "Progressive disease or symptom management need",
+        "timeframe": {
+          "standard": "5 business days",
+          "expedited": "24 hours"
+        }
+      }
+    },
+    "globalRules": {
+      "emergencyExemption": {
+        "description": "Services provided in emergency situations exempt from pre-auth",
+        "applicableServices": "all",
+        "timeLimit": "72 hours post-stabilization",
+        "documentation": "Emergency department record or physician attestation required"
+      },
+      "retroAuth": {
+        "description": "Retrospective authorization process",
+        "timeLimit": "72 hours from service",
+        "applicableTo": ["emergency_admissions", "urgent_procedures"],
+        "denyIfMissed": false
+      },
+      "peerReview": {
+        "description": "Peer-to-peer review process",
+        "availableFor": "all_denied_requests",
+        "timeframe": "5 business days from initial denial",
+        "requirement": "Board-certified physician in same specialty"
+      }
+    }
+  }
+}
