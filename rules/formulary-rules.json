@@ -71,10 +71,26 @@
           "Allergy to required step medication"
         ],
         "documentation": [
-          "Physician letter of medical necessity",
-          "Previous pharmacy records",
-          "Clinical notes showing trial and outcome",
-          "Allergy or adverse reaction documentation"
+          {
+            "type": "physician_letter",
+            "description": "Physician letter of medical necessity",
+            "required": true
+          },
+          {
+            "type": "pharmacy_records",
+            "description": "Previous pharmacy records",
+            "required": true
+          },
+          {
+            "type": "clinical_notes",
+            "description": "Clinical notes showing trial and outcome",
+            "required": true
+          },
+          {
+            "type": "allergy_documentation",
+            "description": "Allergy or adverse reaction documentation",
+            "required": true
+          }
         ]
       }
     },
