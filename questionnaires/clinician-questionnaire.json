@@ -1,0 +1,171 @@
+{
+  "clinicianQuestionnaire": {
+    "metadata": {
+      "version": "1.0",
+      "purpose": "Capture provider friction points for system improvement",
+      "targetAudience": "physicians, nurses, administrative staff",
+      "estimatedTime": "3-5 minutes"
+    },
+    "roleIdentification": {
+      "question": "What is your primary role?",
+      "type": "single_select",
+      "options": [
+        "Physician - Primary Care",
+        "Physician - Specialist",
+        "Nurse Practitioner/PA",
+        "Registered Nurse", 
+        "Administrative Staff",
+        "Care Coordinator",
+        "Other"
+      ],
+      "required": true
+    },
+    "serviceDetails": {
+      "triggerService": {
+        "question": "Which service or procedure triggered the issue?",
+        "type": "searchable_dropdown",
+        "dataSource": "cpt_hcpcs_codes",
+        "allowFreeText": true,
+        "placeholder": "Search CPT/HCPCS code or description",
+        "required": true
+      },
+      "siteOfService": {
+        "question": "Where was the service provided or planned?",
+        "type": "single_select",
+        "options": [
+          "Office/Clinic",
+          "Hospital Inpatient",
+          "Hospital Outpatient",
+          "Ambulatory Surgery Center",
+          "Emergency Department",
+          "Urgent Care",
+          "Home",
+          "Skilled Nursing Facility",
+          "Other"
+        ],
+        "required": true
+      }
+    },
+    "frictionPoint": {
+      "issueType": {
+        "question": "What type of issue occurred?",
+        "type": "single_select",
+        "options": [
+          "Prior Authorization Required",
+          "Prior Authorization Denied",
+          "Medical Necessity Questioned",
+          "Out of Network Issue",
+          "Claim Denied/Rejected", 
+          "Site of Service Issue",
+          "Coordination of Benefits Problem",
+          "Other"
+        ],
+        "required": true
+      },
+      "specificRule": {
+        "question": "Which specific rule or requirement caused the friction?",
+        "type": "conditional_multi_select",
+        "conditions": {
+          "Prior Authorization Required": [
+            "New requirement not previously needed",
+            "Unclear clinical criteria",
+            "System didn't flag requirement upfront"
+          ],
+          "Prior Authorization Denied": [
+            "Medical necessity criteria unclear",
+            "Documentation requirements not specified",
+            "Clinical guidelines not followed by reviewer"
+          ],
+          "Medical Necessity Questioned": [
+            "Criteria not published/accessible",
+            "Reviewer disagreed with clinical judgment", 
+            "Documentation insufficient"
+          ],
+          "Out of Network Issue": [
+            "Provider thought they were in network",
+            "Patient referred to OON provider unknowingly",
+            "Network directory inaccurate"
+          ],
+          "Site of Service Issue": [
+            "Payer preferred different setting",
+            "Cost sharing different than expected",
+            "Site not approved for service"
+          ]
+        },
+        "allowMultiple": true
+      }
+    },
+    "evidenceAttachment": {
+      "clinicalDocumentation": {
+        "question": "Do you have clinical documentation supporting this service?",
+        "type": "file_upload",
+        "acceptedFormats": [".pdf", ".doc", ".docx"],
+        "maxSize": "10MB",
+        "multiple": true,
+        "required": false
+      },
+      "guidelineReference": {
+        "question": "Which clinical guidelines support this service?",
+        "type": "multi_select",
+        "options": [
+          "NCCN Guidelines",
+          "ACP Clinical Guidelines",
+          "AHA/ACC Guidelines", 
+          "ACS Guidelines",
+          "Institutional Protocol",
+          "CMS LCD/NCD",
+          "Other"
+        ],
+        "allowFreeText": true
+      }
+    },
+    "proposedSolution": {
+      "alternativeApproach": {
+        "question": "What would you suggest to resolve this issue?",
+        "type": "multi_select",
+        "options": [
+          "Different modifier code",
+          "Alternative site of service",
+          "Alternative treatment regimen",
+          "Additional documentation",
+          "Peer-to-peer review",
+          "Appeal with additional evidence",
+          "Other"
+        ],
+        "allowFreeText": true
+      },
+      "systemImprovement": {
+        "question": "How could our system better prevent this issue?",
+        "type": "text_area",
+        "maxLength": 500,
+        "placeholder": "Suggest system improvements, workflow changes, or proactive alerts"
+      }
+    },
+    "impact": {
+      "patientImpact": {
+        "question": "How did this issue impact patient care?",
+        "type": "single_select",
+        "options": [
+          "No impact - resolved quickly",
+          "Minor delay in care",
+          "Significant delay in care",
+          "Patient had to pay more than expected",
+          "Treatment had to be changed",
+          "Patient didn't receive needed care"
+        ]
+      },
+      "timeImpact": {
+        "question": "How much additional time did this issue require?",
+        "type": "single_select", 
+        "options": [
+          "Less than 15 minutes",
+          "15-30 minutes",
+          "30-60 minutes",
+          "1-2 hours",
+          "More than 2 hours",
+          "Multiple days/weeks"
+        ]
+      }
+    }
+  }
+}

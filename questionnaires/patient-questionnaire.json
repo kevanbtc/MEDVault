@@ -1,0 +1,247 @@
+{
+  "patientQuestionnaire": {
+    "metadata": {
+      "version": "1.0",
+      "purpose": "Capture patient experience and confusion points",
+      "targetAudience": "patients and caregivers",
+      "estimatedTime": "2-3 minutes",
+      "language": "plain_language_no_jargon"
+    },
+    "experienceType": {
+      "question": "What happened that was confusing or unexpected?",
+      "type": "single_select",
+      "options": [
+        "I got a medical bill that was higher than expected",
+        "I couldn't get an appointment or procedure approved", 
+        "I had trouble getting my medication",
+        "I was told my doctor wasn't covered by my insurance",
+        "I couldn't complete a recommended treatment or test",
+        "Other insurance problem"
+      ],
+      "required": true
+    },
+    "serviceContext": {
+      "serviceType": {
+        "question": "What type of care were you trying to get?",
+        "type": "single_select",
+        "options": [
+          "Visit to my regular doctor",
+          "Visit to a specialist",
+          "Emergency room visit",
+          "Hospital stay",
+          "Surgery or procedure", 
+          "Lab tests or X-rays",
+          "Prescription medication",
+          "Medical equipment",
+          "Other"
+        ],
+        "conditional_followup": {
+          "specialist_visit": {
+            "question": "What type of specialist?",
+            "type": "text_input",
+            "placeholder": "e.g., cardiologist, dermatologist"
+          },
+          "procedure": {
+            "question": "What procedure or surgery?",
+            "type": "text_input", 
+            "placeholder": "Describe in your own words"
+          }
+        }
+      }
+    },
+    "costSurprise": {
+      "unexpectedCost": {
+        "question": "Did you pay more than you expected?",
+        "type": "yes_no",
+        "followup": {
+          "if_yes": {
+            "amount": {
+              "question": "About how much more than expected?",
+              "type": "single_select",
+              "options": [
+                "Less than $100",
+                "$100 - $500",
+                "$500 - $1,000",
+                "$1,000 - $5,000", 
+                "More than $5,000"
+              ]
+            },
+            "reason": {
+              "question": "Why do you think it cost more?",
+              "type": "multi_select",
+              "options": [
+                "My deductible wasn't met yet",
+                "The doctor/hospital wasn't in my network",
+                "My insurance didn't cover the service",
+                "I didn't get pre-approval when I needed to",
+                "I don't understand my insurance benefits",
+                "Other/Not sure"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "accessBarriers": {
+      "couldNotComplete": {
+        "question": "Were you unable to get care that was recommended?",
+        "type": "yes_no",
+        "followup": {
+          "if_yes": {
+            "reason": {
+              "question": "Why couldn't you get the care?",
+              "type": "multi_select",
+              "options": [
+                "It would cost too much",
+                "Insurance wouldn't approve it",
+                "I couldn't find a doctor who takes my insurance",
+                "The wait was too long for approval",
+                "I couldn't take time off work for the process",
+                "I couldn't arrange transportation",
+                "Other"
+              ]
+            },
+            "stillNeeded": {
+              "question": "Do you still need this care?",
+              "type": "yes_no"
+            }
+          }
+        }
+      }
+    },
+    "approvalProcess": {
+      "priorAuthExperience": {
+        "question": "Did you have to get special approval before getting care?",
+        "type": "yes_no_not_sure",
+        "followup": {
+          "if_yes": {
+            "timeToApproval": {
+              "question": "How long did approval take?",
+              "type": "single_select",
+              "options": [
+                "Same day",
+                "1-3 days",
+                "1 week",
+                "2-4 weeks",
+                "More than a month",
+                "Still waiting"
+              ]
+            },
+            "processClarity": {
+              "question": "Was the approval process clearly explained to you?",
+              "type": "scale_1_to_5",
+              "labels": {
+                "1": "Not at all clear",
+                "5": "Very clear"
+              }
+            }
+          },
+          "if_not_sure": {
+            "explanation": {
+              "question": "Tell us what happened:",
+              "type": "text_area",
+              "placeholder": "Describe your experience in your own words",
+              "maxLength": 200
+            }
+          }
+        }
+      }
+    },
+    "medicationIssues": {
+      "drugCoverage": {
+        "question": "Did you have problems getting a prescription filled?",
+        "type": "yes_no",
+        "followup": {
+          "if_yes": {
+            "problemType": {
+              "question": "What was the problem?",
+              "type": "multi_select",
+              "options": [
+                "Insurance didn't cover the medication",
+                "Had to try a different medication first",
+                "Needed special approval from insurance",
+                "Copay was too expensive",
+                "Pharmacy didn't have it in stock",
+                "Other"
+              ]
+            },
+            "resolution": {
+              "question": "How was this resolved?",
+              "type": "multi_select",
+              "options": [
+                "Got approval and received original medication",
+                "Switched to a different covered medication", 
+                "Paying full price without insurance",
+                "Using a patient assistance program",
+                "Still trying to resolve it",
+                "Went without the medication"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "communication": {
+      "informationSources": {
+        "question": "Who helped you understand your insurance benefits?",
+        "type": "multi_select",
+        "options": [
+          "My doctor's office staff",
+          "My insurance company",
+          "Hospital financial counselor",
+          "Pharmacy staff",
+          "Online insurance website",
+          "Family or friends",
+          "No one helped me",
+          "Other"
+        ]
+      },
+      "clarity": {
+        "question": "How well do you understand your insurance coverage?",
+        "type": "scale_1_to_5",
+        "labels": {
+          "1": "Very confused",
+          "5": "Completely understand"
+        }
+      }
+    },
+    "impact": {
+      "careDelay": {
+        "question": "Did insurance issues cause delays in your care?",
+        "type": "yes_no",
+        "followup": {
+          "if_yes": {
+            "delayLength": {
+              "question": "How long was the delay?",
+              "type": "single_select",
+              "options": [
+                "A few days",
+                "1-2 weeks",
+                "1 month",
+                "Several months",
+                "Still delayed"
+              ]
+            }
+          }
+        }
+      },
+      "overallSatisfaction": {
+        "question": "Overall, how satisfied were you with how your insurance handled this situation?",
+        "type": "scale_1_to_5",
+        "labels": {
+          "1": "Very dissatisfied",
+          "5": "Very satisfied"
+        }
+      }
+    },
+    "openFeedback": {
+      "suggestions": {
+        "question": "What could have made this experience better?",
+        "type": "text_area",
+        "placeholder": "Tell us what would have helped...",
+        "maxLength": 300,
+        "required": false
+      }
+    }
+  }
+}

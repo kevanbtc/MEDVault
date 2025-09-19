@@ -1,0 +1,208 @@
+{
+  "payerId": "humana-ma-001",
+  "payerName": "Humana Medicare Advantage",
+  "payerType": "medicare",
+  "planType": "medicare_advantage",
+  "benefitDesign": {
+    "deductible": {
+      "individual": 0,
+      "family": 0,
+      "embedded": false
+    },
+    "oopMax": {
+      "individual": 3400,
+      "family": 3400
+    },
+    "copayStructure": {
+      "primaryCare": 0,
+      "specialist": 40,
+      "emergency": 90,
+      "urgentCare": 25,
+      "inpatient": 275,
+      "outpatientSurgery": 200
+    },
+    "coinsurance": {
+      "inNetwork": 0,
+      "outOfNetwork": 1.0
+    }
+  },
+  "umRules": {
+    "preAuthRequired": [
+      {
+        "serviceCategory": "Inpatient Rehabilitation",
+        "cptCodes": ["99221", "99222", "99223"],
+        "criteria": "Must meet 3-hour rule and rehabilitation potential criteria",
+        "expeditedAvailable": true
+      },
+      {
+        "serviceCategory": "DME",
+        "cptCodes": ["E0781", "E0782", "E0783"],
+        "criteria": "Power wheelchairs require face-to-face encounter and mobility evaluation",
+        "expeditedAvailable": false
+      },
+      {
+        "serviceCategory": "Skilled Nursing Facility",
+        "cptCodes": ["99304", "99305", "99306"],
+        "criteria": "Must meet Medicare SNF criteria with qualifying hospital stay",
+        "expeditedAvailable": true
+      }
+    ],
+    "siteOfServiceSteering": {
+      "preferredSites": [
+        {
+          "service": "Dialysis",
+          "preferred": "office",
+          "incentive": "In-network preferred dialysis centers"
+        }
+      ]
+    },
+    "medicalNecessityCriteria": {
+      "source": "cms_lcd",
+      "version": "2024",
+      "lastUpdated": "2024-01-01"
+    }
+  },
+  "network": {
+    "networkType": "closed",
+    "oonCoverage": {
+      "emergency": true,
+      "regular": false,
+      "balanceBilling": false
+    },
+    "nsaApplicable": {
+      "emergency": true,
+      "facilityAncillary": true,
+      "airAmbulance": true,
+      "groundAmbulance": false
+    }
+  },
+  "formulary": {
+    "tiers": [
+      {
+        "tier": 1,
+        "description": "Preferred Generic",
+        "copay": 0,
+        "coinsurance": 0
+      },
+      {
+        "tier": 2,
+        "description": "Generic",
+        "copay": 8,
+        "coinsurance": 0
+      },
+      {
+        "tier": 3,
+        "description": "Preferred Brand",
+        "copay": 42,
+        "coinsurance": 0
+      },
+      {
+        "tier": 4,
+        "description": "Non-Preferred Brand",
+        "copay": 100,
+        "coinsurance": 0
+      },
+      {
+        "tier": 5,
+        "description": "Specialty",
+        "copay": 0,
+        "coinsurance": 0.33
+      }
+    ],
+    "stepTherapy": [
+      {
+        "drugClass": "PPI",
+        "steps": ["omeprazole", "pantoprazole", "esomeprazole"],
+        "exceptionCriteria": "Previous trial and failure documentation required"
+      }
+    ],
+    "priorAuth": [
+      {
+        "drug": "insulin glargine U-300",
+        "ndc": "00088-2220-05",
+        "criteria": "Inadequate control on U-100 insulin or documented need for concentrated insulin",
+        "duration": "12 months"
+      }
+    ],
+    "quantityLimits": [
+      {
+        "drug": "sumatriptan",
+        "limit": "12 tablets",
+        "timeframe": "30 days"
+      }
+    ]
+  },
+  "cob": {
+    "primaryRules": [
+      "Medicare primary when eligible",
+      "Employer group health plan secondary if large employer exception applies"
+    ],
+    "mspRules": {
+      "esrdCoordination": true,
+      "largeEmployerException": true
+    },
+    "subrogationRights": false
+  },
+  "exclusions": {
+    "experimental": {
+      "definition": "Services not covered by Medicare or not meeting CMS criteria",
+      "compendiaAccepted": ["CMS-approved compendia"],
+      "clinicalTrialCoverage": true
+    },
+    "cosmetic": {
+      "exceptions": ["Medically necessary reconstructive surgery"]
+    },
+    "custodialCare": true,
+    "preExisting": {
+      "applicable": false,
+      "lookbackPeriod": null,
+      "waitingPeriod": null
+    }
+  },
+  "appeals": {
+    "internalLevels": 2,
+    "timeframes": {
+      "standard": "60 days",
+      "expedited": "72 hours"
+    },
+    "externalReview": {
+      "available": true,
+      "iroAssigned": false,
+      "timeframe": "60 days"
+    }
+  },
+  "paymentModel": "capitation",
+  "qualityPrograms": [
+    {
+      "program": "Medicare Stars",
+      "measures": ["HEDIS measures", "CAHPS", "HOS"],
+      "incentives": "CMS quality bonus payments"
+    }
+  ],
+  "bonds": {
+    "dmeposBond": {
+      "required": true,
+      "amount": 50000,
+      "carrier": "CMS-approved surety"
+    },
+    "tpaBond": {
+      "required": false,
+      "amount": 0,
+      "type": null
+    },
+    "performanceBonds": [
+      {
+        "type": "CMS Solvency",
+        "amount": 1000000,
+        "conditions": "Maintain adequate reserves per CMS requirements"
+      }
+    ]
+  },
+  "metadata": {
+    "version": "2024.1",
+    "lastUpdated": "2024-01-01",
+    "source": "Humana MA Plan Document 2024",
+    "effectiveDate": "2024-01-01",
+    "expirationDate": "2024-12-31"
+  }
+}

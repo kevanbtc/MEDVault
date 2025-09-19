@@ -1,0 +1,308 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Payer Profile Schema",
+  "description": "Comprehensive schema for insurance payer profiles covering all aspects of coverage determination",
+  "type": "object",
+  "required": ["payerId", "payerName", "payerType", "planType", "benefitDesign", "umRules", "network", "formulary"],
+  "properties": {
+    "payerId": {
+      "type": "string",
+      "description": "Unique identifier for the payer"
+    },
+    "payerName": {
+      "type": "string",
+      "description": "Display name of the payer"
+    },
+    "payerType": {
+      "type": "string",
+      "enum": ["medicare", "medicaid", "commercial", "va", "tricare", "workers_comp", "auto_pip", "student", "short_term"],
+      "description": "Type of payer organization"
+    },
+    "planType": {
+      "type": "string",
+      "enum": ["hmo", "ppo", "epo", "pos", "hdhp", "medicare_advantage", "medigap", "medicaid_mco"],
+      "description": "Plan structure type"
+    },
+    "benefitDesign": {
+      "type": "object",
+      "required": ["deductible", "oopMax", "copayStructure"],
+      "properties": {
+        "deductible": {
+          "type": "object",
+          "properties": {
+            "individual": {"type": "number"},
+            "family": {"type": "number"},
+            "embedded": {"type": "boolean"}
+          }
+        },
+        "oopMax": {
+          "type": "object",
+          "properties": {
+            "individual": {"type": "number"},
+            "family": {"type": "number"}
+          }
+        },
+        "copayStructure": {
+          "type": "object",
+          "properties": {
+            "primaryCare": {"type": "number"},
+            "specialist": {"type": "number"},
+            "emergency": {"type": "number"},
+            "urgentCare": {"type": "number"},
+            "inpatient": {"type": "number"},
+            "outpatientSurgery": {"type": "number"}
+          }
+        },
+        "coinsurance": {
+          "type": "object",
+          "properties": {
+            "inNetwork": {"type": "number", "minimum": 0, "maximum": 1},
+            "outOfNetwork": {"type": "number", "minimum": 0, "maximum": 1}
+          }
+        }
+      }
+    },
+    "umRules": {
+      "type": "object",
+      "description": "Utilization management rules",
+      "properties": {
+        "preAuthRequired": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "serviceCategory": {"type": "string"},
+              "cptCodes": {"type": "array", "items": {"type": "string"}},
+              "criteria": {"type": "string"},
+              "expeditedAvailable": {"type": "boolean"}
+            }
+          }
+        },
+        "siteOfServiceSteering": {
+          "type": "object",
+          "properties": {
+            "preferredSites": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "service": {"type": "string"},
+                  "preferred": {"type": "string", "enum": ["office", "asc", "hospital_op", "hospital_ip"]},
+                  "incentive": {"type": "string"}
+                }
+              }
+            }
+          }
+        },
+        "medicalNecessityCriteria": {
+          "type": "object",
+          "properties": {
+            "source": {"type": "string", "enum": ["milliman", "interqual", "payer_internal", "cms_lcd", "cms_ncd"]},
+            "version": {"type": "string"},
+            "lastUpdated": {"type": "string", "format": "date"}
+          }
+        }
+      }
+    },
+    "network": {
+      "type": "object",
+      "properties": {
+        "networkType": {"type": "string", "enum": ["closed", "open", "hybrid"]},
+        "oonCoverage": {
+          "type": "object",
+          "properties": {
+            "emergency": {"type": "boolean"},
+            "regular": {"type": "boolean"},
+            "balanceBilling": {"type": "boolean"}
+          }
+        },
+        "nsaApplicable": {
+          "type": "object",
+          "properties": {
+            "emergency": {"type": "boolean"},
+            "facilityAncillary": {"type": "boolean"},
+            "airAmbulance": {"type": "boolean"},
+            "groundAmbulance": {"type": "boolean"}
+          }
+        }
+      }
+    },
+    "formulary": {
+      "type": "object",
+      "properties": {
+        "tiers": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "tier": {"type": "integer"},
+              "description": {"type": "string"},
+              "copay": {"type": "number"},
+              "coinsurance": {"type": "number"}
+            }
+          }
+        },
+        "stepTherapy": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "drugClass": {"type": "string"},
+              "steps": {"type": "array", "items": {"type": "string"}},
+              "exceptionCriteria": {"type": "string"}
+            }
+          }
+        },
+        "priorAuth": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "drug": {"type": "string"},
+              "ndc": {"type": "string"},
+              "criteria": {"type": "string"},
+              "duration": {"type": "string"}
+            }
+          }
+        },
+        "quantityLimits": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "drug": {"type": "string"},
+              "limit": {"type": "string"},
+              "timeframe": {"type": "string"}
+            }
+          }
+        }
+      }
+    },
+    "cob": {
+      "type": "object",
+      "description": "Coordination of Benefits rules",
+      "properties": {
+        "primaryRules": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "mspRules": {
+          "type": "object",
+          "properties": {
+            "esrdCoordination": {"type": "boolean"},
+            "largeEmployerException": {"type": "boolean"}
+          }
+        },
+        "subrogationRights": {"type": "boolean"}
+      }
+    },
+    "exclusions": {
+      "type": "object",
+      "properties": {
+        "experimental": {
+          "type": "object",
+          "properties": {
+            "definition": {"type": "string"},
+            "compendiaAccepted": {"type": "array", "items": {"type": "string"}},
+            "clinicalTrialCoverage": {"type": "boolean"}
+          }
+        },
+        "cosmetic": {
+          "type": "object",
+          "properties": {
+            "exceptions": {"type": "array", "items": {"type": "string"}}
+          }
+        },
+        "custodialCare": {"type": "boolean"},
+        "preExisting": {
+          "type": "object",
+          "properties": {
+            "applicable": {"type": "boolean"},
+            "lookbackPeriod": {"type": "string"},
+            "waitingPeriod": {"type": "string"}
+          }
+        }
+      }
+    },
+    "appeals": {
+      "type": "object",
+      "properties": {
+        "internalLevels": {"type": "integer"},
+        "timeframes": {
+          "type": "object",
+          "properties": {
+            "standard": {"type": "string"},
+            "expedited": {"type": "string"}
+          }
+        },
+        "externalReview": {
+          "type": "object",
+          "properties": {
+            "available": {"type": "boolean"},
+            "iroAssigned": {"type": "boolean"},
+            "timeframe": {"type": "string"}
+          }
+        }
+      }
+    },
+    "paymentModel": {
+      "type": "string",
+      "enum": ["ffs", "capitation", "bundled", "shared_savings", "pathway_based"],
+      "description": "Primary payment model used"
+    },
+    "qualityPrograms": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "program": {"type": "string"},
+          "measures": {"type": "array", "items": {"type": "string"}},
+          "incentives": {"type": "string"}
+        }
+      }
+    },
+    "bonds": {
+      "type": "object",
+      "description": "Required bonds and financial guarantees",
+      "properties": {
+        "dmeposBond": {
+          "type": "object",
+          "properties": {
+            "required": {"type": "boolean"},
+            "amount": {"type": "number"},
+            "carrier": {"type": "string"}
+          }
+        },
+        "tpaBond": {
+          "type": "object",
+          "properties": {
+            "required": {"type": "boolean"},
+            "amount": {"type": "number"},
+            "type": {"type": "string", "enum": ["surety", "fidelity"]}
+          }
+        },
+        "performanceBonds": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "type": {"type": "string"},
+              "amount": {"type": "number"},
+              "conditions": {"type": "string"}
+            }
+          }
+        }
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "version": {"type": "string"},
+        "lastUpdated": {"type": "string", "format": "date"},
+        "source": {"type": "string"},
+        "effectiveDate": {"type": "string", "format": "date"},
+        "expirationDate": {"type": "string", "format": "date"}
+      }
+    }
+  }
+}

@@ -1,0 +1,344 @@
+{
+  "stakeholderMap": {
+    "description": "Comprehensive mapping of all insurance ecosystem participants",
+    "categories": {
+      "primary_participants": {
+        "patients_members": {
+          "roles": ["Care recipients", "Financial responsibility holders", "Plan choosers"],
+          "interactions": [
+            "Enrollment and plan selection",
+            "Service authorization requests", 
+            "Claims and EOB receipt",
+            "Appeals and grievances",
+            "Cost-sharing payments"
+          ],
+          "pain_points": [
+            "Benefit complexity and confusion",
+            "Unexpected costs and balance billing",
+            "Prior authorization delays",
+            "Network adequacy issues",
+            "Appeals process navigation"
+          ],
+          "data_needs": [
+            "Real-time eligibility and benefits",
+            "Provider network status",
+            "Cost estimates and transparency",
+            "Authorization status tracking",
+            "Claims history and explanations"
+          ]
+        },
+        "healthcare_providers": {
+          "subcategories": {
+            "physicians": {
+              "types": ["Primary care", "Specialists", "Hospitalists", "Emergency physicians"],
+              "responsibilities": [
+                "Clinical decision making",
+                "Prior authorization requests",
+                "Documentation and coding",
+                "Patient care coordination"
+              ]
+            },
+            "facilities": {
+              "types": ["Hospitals", "ASCs", "Imaging centers", "Dialysis centers"],
+              "responsibilities": [
+                "Service delivery",
+                "Claims submission", 
+                "Financial counseling",
+                "Network contracting"
+              ]
+            },
+            "ancillary_providers": {
+              "types": ["Labs", "DME suppliers", "Home health", "Pharmacies"],
+              "responsibilities": [
+                "Specialized service delivery",
+                "Prior authorization compliance",
+                "Claims and billing",
+                "Patient education"
+              ]
+            }
+          },
+          "common_interactions": [
+            "Eligibility verification",
+            "Prior authorization submission",
+            "Claims submission and follow-up",
+            "Appeals and peer reviews",
+            "Network participation"
+          ],
+          "challenges": [
+            "Administrative burden",
+            "Varying payer requirements",
+            "Documentation demands",
+            "Payment delays and denials",
+            "Network adequacy pressures"
+          ]
+        },
+        "payers": {
+          "subcategories": {
+            "health_plans": {
+              "types": ["Commercial insurers", "MA plans", "Medicaid MCOs"],
+              "functions": [
+                "Risk pooling and management",
+                "Network development",
+                "Utilization management",
+                "Claims adjudication",
+                "Member services"
+              ]
+            },
+            "employers": {
+              "types": ["Self-funded", "Fully insured", "Public sector"],
+              "functions": [
+                "Plan design and selection",
+                "Employee communication",
+                "Cost management",
+                "Vendor oversight",
+                "Compliance monitoring"
+              ]
+            },
+            "government_programs": {
+              "types": ["Medicare", "Medicaid", "VA", "TRICARE"],
+              "functions": [
+                "Benefit administration", 
+                "Provider payment",
+                "Quality oversight",
+                "Fraud prevention",
+                "Policy implementation"
+              ]
+            }
+          }
+        }
+      },
+      "intermediaries_vendors": {
+        "third_party_administrators": {
+          "role": "Claims processing and member services for self-funded employers",
+          "functions": [
+            "Claims adjudication",
+            "Member services",
+            "Provider relations",
+            "Reporting and analytics",
+            "Regulatory compliance"
+          ],
+          "bonds_required": {
+            "surety_bond": "Typically $100,000-$1,000,000",
+            "fidelity_bond": "Employee dishonesty coverage",
+            "errors_omissions": "Professional liability coverage"
+          }
+        },
+        "pbms": {
+          "role": "Pharmacy benefit management",
+          "functions": [
+            "Formulary development",
+            "Rebate negotiation",
+            "Claims processing",
+            "Prior authorization",
+            "Specialty pharmacy services"
+          ],
+          "revenue_sources": [
+            "Administrative fees",
+            "Rebates and spreads",
+            "Specialty pharmacy margins"
+          ]
+        },
+        "clearinghouses": {
+          "role": "EDI transaction processing",
+          "functions": [
+            "Claims submission routing",
+            "Format validation",
+            "Error detection and correction",
+            "Status reporting",
+            "Connectivity services"
+          ]
+        },
+        "network_leasing_organizations": {
+          "role": "Provider network access",
+          "functions": [
+            "Network development",
+            "Contract negotiation",
+            "Directory maintenance",
+            "Performance monitoring"
+          ]
+        }
+      },
+      "regulatory_oversight": {
+        "federal_agencies": {
+          "cms": {
+            "responsibilities": [
+              "Medicare/Medicaid administration",
+              "Quality program oversight",
+              "Payment policy development",
+              "Fraud prevention",
+              "Innovation testing"
+            ],
+            "key_programs": [
+              "Medicare Advantage Stars",
+              "MSSP/ACO programs",
+              "Innovation Center initiatives",
+              "Quality payment programs"
+            ]
+          },
+          "hhs_oig": {
+            "responsibilities": [
+              "Fraud investigation",
+              "Compliance guidance",
+              "Provider exclusion list",
+              "False Claims Act enforcement"
+            ]
+          },
+          "dol_ebsa": {
+            "responsibilities": [
+              "ERISA enforcement",
+              "Fiduciary oversight",
+              "Plan disclosure requirements",
+              "Prohibited transaction monitoring"
+            ]
+          }
+        },
+        "state_agencies": {
+          "insurance_departments": {
+            "responsibilities": [
+              "Market conduct regulation",
+              "Rate review and approval",
+              "Consumer protection",
+              "Network adequacy monitoring"
+            ]
+          },
+          "medicaid_agencies": {
+            "responsibilities": [
+              "MCO oversight",
+              "Waiver administration",
+              "Quality monitoring",
+              "Provider enrollment"
+            ]
+          }
+        }
+      },
+      "accreditation_quality": {
+        "ncqa": {
+          "role": "Health plan accreditation and HEDIS",
+          "functions": [
+            "Accreditation standards",
+            "HEDIS measure development",
+            "Provider recognition programs",
+            "Quality improvement initiatives"
+          ]
+        },
+        "urac": {
+          "role": "Healthcare organization accreditation",
+          "functions": [
+            "Utilization management standards",
+            "Network adequacy certification", 
+            "Pharmacy benefit standards",
+            "Case management accreditation"
+          ]
+        },
+        "joint_commission": {
+          "role": "Healthcare facility accreditation",
+          "functions": [
+            "Hospital accreditation",
+            "Quality and safety standards",
+            "Performance improvement",
+            "Regulatory compliance"
+          ]
+        }
+      },
+      "financial_support": {
+        "reinsurers": {
+          "role": "Catastrophic risk transfer",
+          "functions": [
+            "Stop-loss insurance",
+            "Excess coverage",
+            "Risk pooling",
+            "Capital adequacy support"
+          ],
+          "products": [
+            "Specific stop-loss",
+            "Aggregate stop-loss", 
+            "Lasered coverage",
+            "Captive arrangements"
+          ]
+        },
+        "surety_companies": {
+          "role": "Financial guarantee provision",
+          "bonds": {
+            "dmepos_supplier": {
+              "amount": "$50,000 per NPI",
+              "purpose": "Medicare supplier guarantee",
+              "requirements": "Active Medicare enrollment"
+            },
+            "tpa_bonds": {
+              "amount": "$100,000-$1,000,000",
+              "purpose": "Claims handling guarantee",
+              "requirements": "State licensing"
+            },
+            "medicaid_mco": {
+              "amount": "$1,000,000-$5,000,000",
+              "purpose": "State contract guarantee",
+              "requirements": "MCO licensure"
+            }
+          }
+        }
+      },
+      "external_review": {
+        "independent_review_organizations": {
+          "role": "External appeal review",
+          "functions": [
+            "Clinical review",
+            "Experimental/investigational determination",
+            "Medical necessity assessment",
+            "Appeal decision rendering"
+          ],
+          "accreditation": "URAC or similar required",
+          "physician_network": "Board-certified specialists required"
+        }
+      },
+      "data_analytics": {
+        "quality_organizations": {
+          "types": ["QIOs", "ACOs", "Quality improvement networks"],
+          "functions": [
+            "Performance measurement",
+            "Benchmarking",
+            "Best practice identification",
+            "Quality improvement support"
+          ]
+        },
+        "consulting_firms": {
+          "types": ["Benefits consulting", "Clinical advisory", "Technology consulting"],
+          "functions": [
+            "Plan design optimization",
+            "Cost management strategies",
+            "Technology implementation",
+            "Regulatory compliance guidance"
+          ]
+        }
+      }
+    },
+    "interaction_patterns": {
+      "claims_processing": {
+        "participants": ["Provider", "Clearinghouse", "Payer", "TPA", "Member"],
+        "flow": [
+          "Service delivery and coding",
+          "Claim submission via clearinghouse",
+          "Initial payer/TPA adjudication",
+          "Prior authorization verification",
+          "Medical necessity review",
+          "Network status validation",
+          "Benefit calculation",
+          "Payment/denial decision",
+          "EOB generation and member notification"
+        ]
+      },
+      "prior_authorization": {
+        "participants": ["Provider", "Payer", "UM vendor", "Member", "IRO"],
+        "flow": [
+          "Clinical request submission",
+          "Administrative completeness review",
+          "Medical necessity evaluation",
+          "Approval/denial decision",
+          "Provider and member notification",
+          "Appeal process if denied",
+          "Peer review if applicable",
+          "External review if exhausted"
+        ]
+      }
+    }
+  }
+}

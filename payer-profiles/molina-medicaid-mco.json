@@ -1,0 +1,202 @@
+{
+  "payerId": "molina-medicaid-mco-001",
+  "payerName": "Molina Healthcare Medicaid MCO",
+  "payerType": "medicaid",
+  "planType": "medicaid_mco",
+  "benefitDesign": {
+    "deductible": {
+      "individual": 0,
+      "family": 0,
+      "embedded": false
+    },
+    "oopMax": {
+      "individual": 0,
+      "family": 0
+    },
+    "copayStructure": {
+      "primaryCare": 0,
+      "specialist": 0,
+      "emergency": 0,
+      "urgentCare": 0,
+      "inpatient": 0,
+      "outpatientSurgery": 0
+    },
+    "coinsurance": {
+      "inNetwork": 0,
+      "outOfNetwork": 1.0
+    }
+  },
+  "umRules": {
+    "preAuthRequired": [
+      {
+        "serviceCategory": "Non-Emergency Transportation",
+        "cptCodes": ["A0425", "A0426", "A0427"],
+        "criteria": "Must be medically necessary and to covered services",
+        "expeditedAvailable": false
+      },
+      {
+        "serviceCategory": "Behavioral Health Inpatient",
+        "cptCodes": ["99221", "99222", "99223"],
+        "criteria": "Must meet ASAM criteria and state guidelines",
+        "expeditedAvailable": true
+      },
+      {
+        "serviceCategory": "Specialist Referrals",
+        "cptCodes": ["99201", "99202", "99203"],
+        "criteria": "PCP referral required except for emergency services",
+        "expeditedAvailable": false
+      }
+    ],
+    "siteOfServiceSteering": {
+      "preferredSites": [
+        {
+          "service": "Emergency Department",
+          "preferred": "office",
+          "incentive": "FQHC/urgent care preferred over ED for non-emergency"
+        }
+      ]
+    },
+    "medicalNecessityCriteria": {
+      "source": "payer_internal",
+      "version": "2024.1",
+      "lastUpdated": "2024-01-01"
+    }
+  },
+  "network": {
+    "networkType": "closed",
+    "oonCoverage": {
+      "emergency": true,
+      "regular": false,
+      "balanceBilling": false
+    },
+    "nsaApplicable": {
+      "emergency": true,
+      "facilityAncillary": true,
+      "airAmbulance": true,
+      "groundAmbulance": false
+    }
+  },
+  "formulary": {
+    "tiers": [
+      {
+        "tier": 1,
+        "description": "Preferred Generic",
+        "copay": 0,
+        "coinsurance": 0
+      },
+      {
+        "tier": 2,
+        "description": "Non-Preferred Generic",
+        "copay": 1,
+        "coinsurance": 0
+      },
+      {
+        "tier": 3,
+        "description": "Preferred Brand",
+        "copay": 3,
+        "coinsurance": 0
+      },
+      {
+        "tier": 4,
+        "description": "Non-Preferred Brand",
+        "copay": 5,
+        "coinsurance": 0
+      }
+    ],
+    "stepTherapy": [
+      {
+        "drugClass": "Antipsychotics",
+        "steps": ["haloperidol", "risperidone", "olanzapine"],
+        "exceptionCriteria": "Previous trial and documented inadequate response"
+      }
+    ],
+    "priorAuth": [
+      {
+        "drug": "brand name when generic available",
+        "ndc": "*",
+        "criteria": "Generic must be tried and failed first",
+        "duration": "12 months"
+      }
+    ],
+    "quantityLimits": [
+      {
+        "drug": "controlled substances",
+        "limit": "30 day supply",
+        "timeframe": "30 days"
+      }
+    ]
+  },
+  "cob": {
+    "primaryRules": [
+      "Medicaid always payer of last resort",
+      "Third party liability must be exhausted first"
+    ],
+    "mspRules": {
+      "esrdCoordination": false,
+      "largeEmployerException": false
+    },
+    "subrogationRights": true
+  },
+  "exclusions": {
+    "experimental": {
+      "definition": "Services not covered under state Medicaid plan",
+      "compendiaAccepted": ["State-approved drug compendia"],
+      "clinicalTrialCoverage": false
+    },
+    "cosmetic": {
+      "exceptions": ["Medically necessary reconstruction", "Treatment of congenital anomalies"]
+    },
+    "custodialCare": true,
+    "preExisting": {
+      "applicable": false,
+      "lookbackPeriod": null,
+      "waitingPeriod": null
+    }
+  },
+  "appeals": {
+    "internalLevels": 1,
+    "timeframes": {
+      "standard": "30 days",
+      "expedited": "72 hours"
+    },
+    "externalReview": {
+      "available": true,
+      "iroAssigned": false,
+      "timeframe": "120 days"
+    }
+  },
+  "paymentModel": "capitation",
+  "qualityPrograms": [
+    {
+      "program": "HEDIS Medicaid",
+      "measures": ["Childhood Immunizations", "Prenatal Care", "Mental Health Utilization"],
+      "incentives": "State quality withhold and bonuses"
+    }
+  ],
+  "bonds": {
+    "dmeposBond": {
+      "required": false,
+      "amount": 0,
+      "carrier": null
+    },
+    "tpaBond": {
+      "required": false,
+      "amount": 0,
+      "type": null
+    },
+    "performanceBonds": [
+      {
+        "type": "State MCO Bond",
+        "amount": 2000000,
+        "conditions": "State-required solvency guarantee"
+      }
+    ]
+  },
+  "metadata": {
+    "version": "2024.1",
+    "lastUpdated": "2024-01-01",
+    "source": "State Medicaid Contract 2024",
+    "effectiveDate": "2024-01-01",
+    "expirationDate": "2024-12-31"
+  }
+}
