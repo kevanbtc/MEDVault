@@ -57,6 +57,8 @@ This document defines the comprehensive rules engine and forms framework for the
 - Timeline requirements
 - Escalation procedures
 
+*Note: Detailed Claims Processing Rules implementation can be found in the [Claims Processing Rules](#claims-processing-rules) section below.*
+
 ### Rule Definition Structure
 
 ```json
