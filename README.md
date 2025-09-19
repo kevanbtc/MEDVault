@@ -15,6 +15,7 @@ MEDVault is a comprehensive insurance machine documentation system that maps out
 7. [Rules & Forms Framework](#rules--forms-framework)
 8. [AI Prompt Templates](#ai-prompt-templates)
 9. [Implementation Guidelines](#implementation-guidelines)
+10. [Infrastructure Deployment Guide](docs/INFRASTRUCTURE_DEPLOYMENT.md)
 
 ---
 

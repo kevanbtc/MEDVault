@@ -26,21 +26,30 @@ This documentation provides a comprehensive insurance system framework that cove
    - Scalability design
    - Disaster recovery
 
-3. **[BOND_INSURANCE_EDGE_CASES.md](BOND_INSURANCE_EDGE_CASES.md)** - Bond insurance specialization
+3. **[INFRASTRUCTURE_DEPLOYMENT.md](INFRASTRUCTURE_DEPLOYMENT.md)** - Complete deployment guide
+   - Step-by-step deployment instructions
+   - Infrastructure-as-Code templates
+   - Environment setup and configuration
+   - Monitoring and observability setup
+   - Security hardening procedures
+   - Backup and recovery processes
+   - Troubleshooting guide
+
+4. **[BOND_INSURANCE_EDGE_CASES.md](BOND_INSURANCE_EDGE_CASES.md)** - Bond insurance specialization
    - Municipal bond insurance complexities
    - Structured finance edge cases
    - Regulatory complications
    - Stakeholder dynamics
    - Special handling procedures
 
-4. **[AI_PROMPT_TEMPLATES.md](AI_PROMPT_TEMPLATES.md)** - AI prompt engineering for insurance
+5. **[AI_PROMPT_TEMPLATES.md](AI_PROMPT_TEMPLATES.md)** - AI prompt engineering for insurance
    - Underwriting AI prompts
    - Claims processing AI prompts
    - Customer service AI prompts
    - Compliance AI prompts
    - Risk assessment AI prompts
 
-5. **[RULES_AND_FORMS_FRAMEWORK.md](RULES_AND_FORMS_FRAMEWORK.md)** - Automation framework
+6. **[RULES_AND_FORMS_FRAMEWORK.md](RULES_AND_FORMS_FRAMEWORK.md)** - Automation framework
    - Rules engine architecture
    - Form templates
    - Validation engine
