@@ -1,0 +1,218 @@
+$schema: "http://json-schema.org/draft-07/schema#"
+title: "Payer Profile Schema"
+description: "Machine-readable schema for insurance payer profiles with versioning"
+type: "object"
+required:
+  - schema_version
+  - payer_info
+  - coverage_rules
+  - prior_auth_rules
+  - nsa_rules
+  - eligibility_rules
+properties:
+  schema_version:
+    type: "string"
+    pattern: "^\\d+\\.\\d+\\.\\d+$"
+    description: "Semantic version of this schema"
+  
+  payer_info:
+    type: "object"
+    required:
+      - name
+      - type
+      - region
+      - effective_date
+    properties:
+      name:
+        type: "string"
+        description: "Full name of the payer"
+      type:
+        type: "string"
+        enum: ["PPO", "HMO", "EPO", "POS", "MEDICARE_ADVANTAGE", "MEDICAID_MCO", "TRADITIONAL_MEDICARE"]
+        description: "Type of insurance plan"
+      region:
+        type: "string"
+        description: "Geographic region or state"
+      effective_date:
+        type: "string"
+        format: "date"
+        description: "Date when this profile becomes effective"
+      expiration_date:
+        type: "string"
+        format: "date"
+        description: "Optional expiration date"
+  
+  coverage_rules:
+    type: "object"
+    required:
+      - in_network_coverage
+      - out_of_network_coverage
+      - deductible_rules
+      - copay_rules
+    properties:
+      in_network_coverage:
+        type: "object"
+        properties:
+          percentage:
+            type: "number"
+            minimum: 0
+            maximum: 100
+          max_out_of_pocket:
+            type: "number"
+            minimum: 0
+      out_of_network_coverage:
+        type: "object"
+        properties:
+          percentage:
+            type: "number"
+            minimum: 0
+            maximum: 100
+          max_out_of_pocket:
+            type: "number"
+            minimum: 0
+      deductible_rules:
+        type: "object"
+        properties:
+          individual:
+            type: "number"
+            minimum: 0
+          family:
+            type: "number"
+            minimum: 0
+          applies_to:
+            type: "array"
+            items:
+              type: "string"
+              enum: ["inpatient", "outpatient", "emergency", "prescription", "all"]
+      copay_rules:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            service_type:
+              type: "string"
+            amount:
+              type: "number"
+              minimum: 0
+            percentage:
+              type: "number"
+              minimum: 0
+              maximum: 100
+  
+  prior_auth_rules:
+    type: "object"
+    properties:
+      required_services:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            cpt_codes:
+              type: "array"
+              items:
+                type: "string"
+            service_category:
+              type: "string"
+            authorization_window_days:
+              type: "integer"
+              minimum: 1
+            retroactive_allowed:
+              type: "boolean"
+      exemptions:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            condition:
+              type: "string"
+            cpt_codes:
+              type: "array"
+              items:
+                type: "string"
+  
+  nsa_rules:
+    type: "object"
+    description: "No Surprises Act protection rules"
+    properties:
+      emergency_services:
+        type: "object"
+        properties:
+          applies_in_network_rate:
+            type: "boolean"
+          patient_liability_limit:
+            type: "string"
+            enum: ["in_network_cost_sharing", "qualifying_payment_amount"]
+      out_of_network_facility:
+        type: "object"
+        properties:
+          ancillary_services_protected:
+            type: "boolean"
+          qpa_calculation_method:
+            type: "string"
+            enum: ["median_contracted_rate", "ghost_rate", "all_payer_database"]
+      balance_billing_protection:
+        type: "object"
+        properties:
+          protected_services:
+            type: "array"
+            items:
+              type: "string"
+          notice_and_consent_eligible:
+            type: "array"
+            items:
+              type: "string"
+  
+  eligibility_rules:
+    type: "object"
+    properties:
+      verification_required:
+        type: "boolean"
+      staleness_threshold_hours:
+        type: "integer"
+        minimum: 1
+        description: "How long eligibility data remains valid"
+      real_time_verification_endpoints:
+        type: "array"
+        items:
+          type: "string"
+          format: "uri"
+  
+  bundling_rules:
+    type: "array"
+    items:
+      type: "object"
+      properties:
+        name:
+          type: "string"
+        primary_cpt:
+          type: "string"
+        bundled_cpts:
+          type: "array"
+          items:
+            type: "string"
+        modifier_exceptions:
+          type: "array"
+          items:
+            type: "string"
+        ncci_compliant:
+          type: "boolean"
+  
+  modifiers:
+    type: "object"
+    properties:
+      allowed_modifiers:
+        type: "array"
+        items:
+          type: "object"
+          properties:
+            code:
+              type: "string"
+            description:
+              type: "string"
+            multiplier:
+              type: "number"
+              minimum: 0
+            conditions:
+              type: "array"
+              items:
+                type: "string"

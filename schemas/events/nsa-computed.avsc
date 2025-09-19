@@ -1,0 +1,161 @@
+{
+  "type": "record",
+  "name": "NsaComputed",
+  "namespace": "com.medvault.events",
+  "doc": "Event published when NSA patient liability calculation is completed",
+  "fields": [
+    {
+      "name": "event_id",
+      "type": "string",
+      "doc": "Unique identifier for this event"
+    },
+    {
+      "name": "event_timestamp",
+      "type": "long",
+      "logicalType": "timestamp-millis",
+      "doc": "When the event occurred"
+    },
+    {
+      "name": "calculation_id",
+      "type": "string",
+      "doc": "Unique identifier for this NSA calculation"
+    },
+    {
+      "name": "payer_profile_id",
+      "type": "string",
+      "doc": "ID of the payer profile used"
+    },
+    {
+      "name": "input_parameters",
+      "type": {
+        "type": "record",
+        "name": "NSAInputParams",
+        "fields": [
+          {"name": "service_type", "type": "string"},
+          {
+            "name": "facility_network_status",
+            "type": {
+              "type": "enum",
+              "name": "NetworkStatus",
+              "symbols": ["IN_NETWORK", "OUT_OF_NETWORK"]
+            }
+          },
+          {
+            "name": "provider_network_status",
+            "type": "NetworkStatus"
+          },
+          {"name": "charged_amount", "type": "double"},
+          {"name": "contracted_rate", "type": ["null", "double"], "default": null},
+          {"name": "patient_consent", "type": "boolean", "default": false},
+          {
+            "name": "patient_plan",
+            "type": {
+              "type": "record",
+              "name": "PatientPlan",
+              "fields": [
+                {"name": "deductible_met", "type": "double", "default": 0.0},
+                {"name": "out_of_pocket_met", "type": "double", "default": 0.0},
+                {"name": "plan_year_start", "type": ["null", "string"], "default": null}
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "calculation_result",
+      "type": {
+        "type": "record",
+        "name": "NSACalculationResult",
+        "fields": [
+          {"name": "nsa_applicable", "type": "boolean"},
+          {"name": "qpa_used", "type": "boolean"},
+          {"name": "qualifying_payment_amount", "type": ["null", "double"], "default": null},
+          {"name": "patient_cost_sharing", "type": ["null", "double"], "default": null},
+          {"name": "balance_billing_allowed", "type": "boolean"},
+          {
+            "name": "calculation_method",
+            "type": {
+              "type": "enum",
+              "name": "CalculationMethod",
+              "symbols": ["STANDARD_OON", "NSA_PROTECTED", "NSA_WITH_BALANCE_BILLING"]
+            }
+          },
+          {"name": "final_patient_liability", "type": "double"},
+          {
+            "name": "qpa_method",
+            "type": {
+              "type": "enum",
+              "name": "QPAMethod",
+              "symbols": ["MEDIAN_CONTRACTED_RATE", "GHOST_RATE", "ALL_PAYER_DATABASE"],
+              "default": "MEDIAN_CONTRACTED_RATE"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "calculation_steps",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "name": "CalculationStep",
+          "fields": [
+            {"name": "step_number", "type": "int"},
+            {"name": "description", "type": "string"},
+            {"name": "result", "type": ["null", "double", "boolean", "string"]},
+            {"name": "reasoning", "type": ["null", "string"], "default": null},
+            {"name": "method", "type": ["null", "string"], "default": null}
+          ]
+        }
+      },
+      "default": []
+    },
+    {
+      "name": "compliance_flags",
+      "type": {
+        "type": "record",
+        "name": "ComplianceFlags",
+        "fields": [
+          {"name": "emergency_services_protected", "type": "boolean", "default": false},
+          {"name": "ancillary_services_protected", "type": "boolean", "default": false},
+          {"name": "balance_billing_prohibited", "type": "boolean", "default": false},
+          {"name": "notice_and_consent_provided", "type": "boolean", "default": false},
+          {"name": "good_faith_estimate_given", "type": "boolean", "default": false}
+        ]
+      }
+    },
+    {
+      "name": "regulatory_citations",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "name": "RegulatoryCitation",
+          "fields": [
+            {"name": "regulation", "type": "string"},
+            {"name": "section", "type": "string"},
+            {"name": "description", "type": "string"},
+            {"name": "url", "type": ["null", "string"], "default": null}
+          ]
+        }
+      },
+      "default": []
+    },
+    {
+      "name": "metadata",
+      "type": {
+        "type": "record",
+        "name": "EventMetadata",
+        "fields": [
+          {"name": "source", "type": "string", "default": "medvault-nsa-calculator"},
+          {"name": "version", "type": "string", "default": "1.0.0"},
+          {"name": "correlation_id", "type": ["null", "string"], "default": null},
+          {"name": "user_id", "type": ["null", "string"], "default": null},
+          {"name": "processing_time_ms", "type": "long", "default": 0}
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+schema_version: "1.0.0"
+
+payer_info:
+  name: "State Medicaid MCO"
+  type: "MEDICAID_MCO"
+  region: "California"
+  effective_date: "2024-01-01"
+
+coverage_rules:
+  in_network_coverage:
+    percentage: 100
+    max_out_of_pocket: 0
+  out_of_network_coverage:
+    percentage: 0
+    max_out_of_pocket: 0
+  deductible_rules:
+    individual: 0
+    family: 0
+    applies_to: []
+  copay_rules:
+    - service_type: "primary_care"
+      amount: 0
+    - service_type: "specialist"
+      amount: 5
+    - service_type: "emergency_room"
+      amount: 0
+    - service_type: "prescription_generic"
+      amount: 1
+    - service_type: "prescription_brand"
+      amount: 3
+
+prior_auth_rules:
+  required_services:
+    - cpt_codes: ["J1745", "J9355", "J1300"]
+      service_category: "high_cost_injectables"
+      authorization_window_days: 14
+      retroactive_allowed: false
+    - cpt_codes: ["29881", "29882", "29883"]
+      service_category: "arthroscopic_procedures"
+      authorization_window_days: 30
+      retroactive_allowed: true
+  exemptions:
+    - condition: "epsdt_services"
+      cpt_codes: ["99381", "99382", "99383", "99384", "99385"]
+
+nsa_rules:
+  emergency_services:
+    applies_in_network_rate: true
+    patient_liability_limit: "in_network_cost_sharing"
+  out_of_network_facility:
+    ancillary_services_protected: true
+    qpa_calculation_method: "ghost_rate"
+  balance_billing_protection:
+    protected_services: ["emergency_care", "ancillary_at_in_network_facility"]
+    notice_and_consent_eligible: []
+
+eligibility_rules:
+  verification_required: true
+  staleness_threshold_hours: 12
+  real_time_verification_endpoints:
+    - "https://api.dhcs.ca.gov/medicaid/eligibility/v1"
+
+bundling_rules:
+  - name: "Well Child Visit Bundle"
+    primary_cpt: "99381"
+    bundled_cpts: ["90460", "90461"]
+    modifier_exceptions: []
+    ncci_compliant: true
+  - name: "Prenatal Care Bundle"
+    primary_cpt: "59400"
+    bundled_cpts: ["59025", "59050"]
+    modifier_exceptions: ["22"]
+    ncci_compliant: true
+
+modifiers:
+  allowed_modifiers:
+    - code: "U1"
+      description: "Medicaid level of care 1"
+      multiplier: 1.0
+      conditions: ["medicaid_specific"]
+    - code: "EP"
+      description: "Service provided as part of Medicaid early periodic screening"
+      multiplier: 1.0
+      conditions: ["epsdt_service"]

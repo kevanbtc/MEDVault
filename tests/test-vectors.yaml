@@ -1,0 +1,205 @@
+# Test Vectors for MEDVault Healthcare Insurance System
+# Golden test cases for PET+26, NCCI bundles, NSA ED OON math
+
+test_vectors:
+  # PET+26 Test Cases (Positron Emission Tomography with modifier 26)
+  pet_26_cases:
+    - name: "PET Brain Professional Component"
+      description: "PET scan of brain with professional component modifier"
+      input:
+        cpt_code: "78608"
+        modifiers: ["26"]
+        payer_profile: "uhc-ppo-2024"
+        charged_amount: 3500.00
+        network_status: "in_network"
+      expected:
+        professional_component_rate: 0.26
+        adjusted_amount: 910.00
+        patient_responsibility: 182.00
+        coverage_percentage: 80
+        bundling_applies: false
+      
+    - name: "PET Whole Body Technical Component"
+      description: "PET whole body scan with technical component modifier"
+      input:
+        cpt_code: "78815"
+        modifiers: ["TC"]
+        payer_profile: "medicare-advantage-2024"
+        charged_amount: 4200.00
+        network_status: "in_network"
+      expected:
+        technical_component_rate: 0.74
+        adjusted_amount: 3108.00
+        patient_responsibility: 0.00
+        coverage_percentage: 100
+        bundling_applies: false
+
+  # NCCI Bundle Test Cases
+  ncci_bundle_cases:
+    - name: "Colonoscopy with Biopsy Bundle"
+      description: "Colonoscopy bundled with biopsy - should bundle unless modifier 59"
+      input:
+        cpt_codes: ["45380", "88305"]
+        modifiers: []
+        payer_profile: "uhc-ppo-2024"
+        charged_amounts: [1200.00, 300.00]
+        network_status: "in_network"
+      expected:
+        bundling_applies: true
+        primary_cpt: "45380"
+        bundled_cpts: ["88305"]
+        final_amount: 1200.00
+        patient_responsibility: 240.00
+        
+    - name: "Colonoscopy with Biopsy - Modifier 59 Exception"
+      description: "Same procedure but with modifier 59 to prevent bundling"
+      input:
+        cpt_codes: ["45380", "88305"]
+        modifiers: ["59"]
+        payer_profile: "uhc-ppo-2024"
+        charged_amounts: [1200.00, 300.00]
+        network_status: "in_network"
+      expected:
+        bundling_applies: false
+        total_amount: 1500.00
+        patient_responsibility: 300.00
+        
+    - name: "Cataract Surgery Bundle"
+      description: "Cataract surgery with associated procedures"
+      input:
+        cpt_codes: ["66984", "66821", "92012"]
+        modifiers: ["LT"]
+        payer_profile: "medicare-advantage-2024"
+        charged_amounts: [2800.00, 150.00, 200.00]
+        network_status: "in_network"
+      expected:
+        bundling_applies: true
+        primary_cpt: "66984"
+        bundled_cpts: ["66821", "92012"]
+        final_amount: 2800.00
+        patient_responsibility: 300.00
+
+  # NSA Emergency Department Out-of-Network Cases
+  nsa_ed_oon_cases:
+    - name: "ED Visit OON - Basic NSA Protection"
+      description: "Emergency department visit at out-of-network hospital"
+      input:
+        service_type: "emergency_care"
+        cpt_codes: ["99284"]
+        facility_network_status: "out_of_network"
+        provider_network_status: "out_of_network"
+        charged_amount: 2500.00
+        contracted_rate: 1800.00
+        patient_consent: false
+        payer_profile: "uhc-ppo-2024"
+        patient_plan:
+          deductible_met: 0.00
+          out_of_pocket_met: 500.00
+      expected:
+        nsa_applicable: true
+        qpa_used: true
+        qualifying_payment_amount: 1800.00
+        balance_billing_allowed: false
+        patient_cost_sharing: 360.00
+        final_patient_liability: 360.00
+        calculation_method: "nsa_protected"
+        
+    - name: "ED Visit OON - With Ancillary Services"
+      description: "ED visit with lab work from OON providers"
+      input:
+        service_type: "emergency_care"
+        cpt_codes: ["99284", "80053", "85025"]
+        facility_network_status: "out_of_network"
+        provider_network_status: "out_of_network"
+        charged_amount: 3200.00
+        contracted_rate: 2400.00
+        patient_consent: false
+        payer_profile: "medicare-advantage-2024"
+        patient_plan:
+          deductible_met: 0.00
+          out_of_pocket_met: 0.00
+      expected:
+        nsa_applicable: true
+        qpa_used: true
+        qualifying_payment_amount: 2400.00
+        balance_billing_allowed: false
+        patient_cost_sharing: 90.00
+        final_patient_liability: 90.00
+        calculation_method: "nsa_protected"
+        
+    - name: "ED Visit - Ground Ambulance"
+      description: "Ground ambulance transport to ED (NSA protected)"
+      input:
+        service_type: "ground_ambulance"
+        cpt_codes: ["A0428"]
+        facility_network_status: "out_of_network"
+        provider_network_status: "out_of_network"
+        charged_amount: 1500.00
+        contracted_rate: 900.00
+        patient_consent: false
+        payer_profile: "medicaid-mco-2024"
+        patient_plan:
+          deductible_met: 0.00
+          out_of_pocket_met: 0.00
+      expected:
+        nsa_applicable: true
+        qpa_used: true
+        qualifying_payment_amount: 900.00
+        balance_billing_allowed: false
+        patient_cost_sharing: 0.00
+        final_patient_liability: 0.00
+        calculation_method: "nsa_protected"
+
+  # Complex Scenarios
+  complex_scenarios:
+    - name: "Surgical Procedure with Multiple Modifiers"
+      description: "Complex surgery with professional/technical split and bilateral modifier"
+      input:
+        cpt_codes: ["27447"]
+        modifiers: ["26", "50"]
+        payer_profile: "uhc-ppo-2024"
+        charged_amount: 8500.00
+        network_status: "in_network"
+        prior_auth_status: "approved"
+      expected:
+        prior_auth_required: true
+        professional_component_rate: 0.26
+        bilateral_multiplier: 1.5
+        adjusted_amount: 3315.00
+        patient_responsibility: 663.00
+        
+    - name: "Notice and Consent Scenario"
+      description: "Non-emergency procedure at OON facility with patient consent"
+      input:
+        service_type: "elective_surgery"
+        facility_network_status: "out_of_network"
+        provider_network_status: "out_of_network"
+        charged_amount: 12000.00
+        contracted_rate: 8000.00
+        patient_consent: true
+        notice_provided: true
+        payer_profile: "uhc-ppo-2024"
+      expected:
+        nsa_applicable: true
+        balance_billing_allowed: true
+        qpa_used: true
+        qualifying_payment_amount: 8000.00
+        patient_cost_sharing: 1600.00
+        balance_billing_amount: 4000.00
+        final_patient_liability: 5600.00
+        calculation_method: "nsa_with_balance_billing"
+
+# Test Execution Configuration
+execution_config:
+  tolerance: 0.01  # Allow $0.01 variance in monetary calculations
+  timeout_seconds: 30
+  parallel_execution: true
+  generate_reports: true
+  fail_fast: false
+
+# Expected Performance Benchmarks
+performance_benchmarks:
+  scrubber_processing_time_ms: 500
+  nsa_calculation_time_ms: 100
+  rule_evaluation_time_ms: 50
+  throughput_claims_per_second: 1000

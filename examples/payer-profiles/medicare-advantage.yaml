@@ -1,0 +1,82 @@
+schema_version: "1.0.0"
+
+payer_info:
+  name: "Medicare Advantage Plan"
+  type: "MEDICARE_ADVANTAGE"
+  region: "National"
+  effective_date: "2024-01-01"
+
+coverage_rules:
+  in_network_coverage:
+    percentage: 100
+    max_out_of_pocket: 6700
+  out_of_network_coverage:
+    percentage: 0
+    max_out_of_pocket: 6700
+  deductible_rules:
+    individual: 0
+    family: 0
+    applies_to: []
+  copay_rules:
+    - service_type: "primary_care"
+      amount: 0
+    - service_type: "specialist"
+      amount: 30
+    - service_type: "emergency_room"
+      amount: 90
+    - service_type: "inpatient_hospital"
+      amount: 300
+      
+prior_auth_rules:
+  required_services:
+    - cpt_codes: ["99401", "99402", "99403", "99404"]
+      service_category: "preventive_counseling"
+      authorization_window_days: 60
+      retroactive_allowed: true
+    - cpt_codes: ["95004", "95024", "95027"]
+      service_category: "allergy_testing"
+      authorization_window_days: 30
+      retroactive_allowed: false
+  exemptions:
+    - condition: "medicare_covered_preventive"
+      cpt_codes: ["G0438", "G0439", "99387", "99397"]
+
+nsa_rules:
+  emergency_services:
+    applies_in_network_rate: true
+    patient_liability_limit: "in_network_cost_sharing"
+  out_of_network_facility:
+    ancillary_services_protected: true
+    qpa_calculation_method: "all_payer_database"
+  balance_billing_protection:
+    protected_services: ["emergency_care", "ancillary_at_in_network_facility", "ground_ambulance"]
+    notice_and_consent_eligible: []
+
+eligibility_rules:
+  verification_required: true
+  staleness_threshold_hours: 6
+  real_time_verification_endpoints:
+    - "https://api.cms.gov/medicare/eligibility/v2"
+
+bundling_rules:
+  - name: "Annual Wellness Visit Bundle"
+    primary_cpt: "G0438"
+    bundled_cpts: ["G0442", "G0443"]
+    modifier_exceptions: []
+    ncci_compliant: true
+  - name: "Diabetic Eye Exam"
+    primary_cpt: "92002"
+    bundled_cpts: ["92250"]
+    modifier_exceptions: ["25"]
+    ncci_compliant: true
+
+modifiers:
+  allowed_modifiers:
+    - code: "25"
+      description: "Significant, Separately Identifiable E/M Service"
+      multiplier: 1.0
+      conditions: ["separate_evaluation"]
+    - code: "GY"
+      description: "Item or service statutorily excluded"
+      multiplier: 0.0
+      conditions: ["non_covered_service"]

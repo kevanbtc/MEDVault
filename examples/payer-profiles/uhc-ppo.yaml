@@ -1,0 +1,86 @@
+schema_version: "1.0.0"
+
+payer_info:
+  name: "UnitedHealthcare PPO"
+  type: "PPO"
+  region: "National"
+  effective_date: "2024-01-01"
+
+coverage_rules:
+  in_network_coverage:
+    percentage: 80
+    max_out_of_pocket: 8550
+  out_of_network_coverage:
+    percentage: 60
+    max_out_of_pocket: 17100
+  deductible_rules:
+    individual: 1500
+    family: 3000
+    applies_to: ["inpatient", "outpatient", "emergency"]
+  copay_rules:
+    - service_type: "primary_care"
+      amount: 25
+    - service_type: "specialist"
+      amount: 50
+    - service_type: "emergency_room"
+      amount: 300
+    - service_type: "urgent_care"
+      amount: 75
+
+prior_auth_rules:
+  required_services:
+    - cpt_codes: ["27447", "27130", "27236"]
+      service_category: "orthopedic_surgery"
+      authorization_window_days: 30
+      retroactive_allowed: false
+    - cpt_codes: ["70551", "70552", "70553"]
+      service_category: "advanced_imaging_mri"
+      authorization_window_days: 14
+      retroactive_allowed: true
+  exemptions:
+    - condition: "emergency"
+      cpt_codes: ["99281", "99282", "99283", "99284", "99285"]
+
+nsa_rules:
+  emergency_services:
+    applies_in_network_rate: true
+    patient_liability_limit: "in_network_cost_sharing"
+  out_of_network_facility:
+    ancillary_services_protected: true
+    qpa_calculation_method: "median_contracted_rate"
+  balance_billing_protection:
+    protected_services: ["emergency_care", "ancillary_at_in_network_facility"]
+    notice_and_consent_eligible: ["non_emergency_at_oon_facility"]
+
+eligibility_rules:
+  verification_required: true
+  staleness_threshold_hours: 24
+  real_time_verification_endpoints:
+    - "https://api.uhc.com/eligibility/v1"
+
+bundling_rules:
+  - name: "Colonoscopy with Biopsy"
+    primary_cpt: "45380"
+    bundled_cpts: ["88305"]
+    modifier_exceptions: ["59"]
+    ncci_compliant: true
+  - name: "Cataract Surgery Bundle"
+    primary_cpt: "66984"
+    bundled_cpts: ["66821", "92012"]
+    modifier_exceptions: ["LT", "RT"]
+    ncci_compliant: true
+
+modifiers:
+  allowed_modifiers:
+    - code: "26"
+      description: "Professional Component"
+      multiplier: 0.26
+      conditions: ["radiology", "pathology"]
+    - code: "TC"
+      description: "Technical Component"
+      multiplier: 0.74
+      conditions: ["radiology"]
+    - code: "59"
+      description: "Distinct Procedural Service"
+      multiplier: 1.0
+      conditions: ["unbundling_justified"]

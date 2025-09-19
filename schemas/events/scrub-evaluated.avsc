@@ -1,0 +1,151 @@
+{
+  "type": "record",
+  "name": "ScrubEvaluated",
+  "namespace": "com.medvault.events",
+  "doc": "Event published when claim scrubbing evaluation is completed",
+  "fields": [
+    {
+      "name": "event_id",
+      "type": "string",
+      "doc": "Unique identifier for this event"
+    },
+    {
+      "name": "event_timestamp",
+      "type": "long",
+      "logicalType": "timestamp-millis",
+      "doc": "When the event occurred"
+    },
+    {
+      "name": "request_id",
+      "type": "string",
+      "doc": "ID of the original scrub request"
+    },
+    {
+      "name": "payer_profile_id",
+      "type": "string",
+      "doc": "ID of the payer profile used"
+    },
+    {
+      "name": "claim_results",
+      "type": {
+        "type": "array",
+        "items": {
+          "type": "record",
+          "name": "ClaimResult",
+          "fields": [
+            {
+              "name": "claim_id",
+              "type": "string"
+            },
+            {
+              "name": "status",
+              "type": {
+                "type": "enum",
+                "name": "ScrubStatus",
+                "symbols": ["PASSED", "FAILED", "WARNING", "MODIFIED"]
+              }
+            },
+            {
+              "name": "original_claim",
+              "type": {
+                "type": "record",
+                "name": "ClaimData",
+                "fields": [
+                  {"name": "claim_id", "type": "string"},
+                  {"name": "patient_id", "type": "string"},
+                  {"name": "service_date", "type": "string"},
+                  {"name": "cpt_codes", "type": {"type": "array", "items": "string"}},
+                  {"name": "modifiers", "type": {"type": "array", "items": "string"}, "default": []},
+                  {"name": "provider_npi", "type": ["null", "string"], "default": null},
+                  {"name": "facility_npi", "type": ["null", "string"], "default": null},
+                  {"name": "charged_amount", "type": "double"},
+                  {"name": "diagnosis_codes", "type": {"type": "array", "items": "string"}, "default": []}
+                ]
+              }
+            },
+            {
+              "name": "processed_claim",
+              "type": "ClaimData"
+            },
+            {
+              "name": "applied_rules",
+              "type": {"type": "array", "items": "string"},
+              "default": []
+            },
+            {
+              "name": "issues",
+              "type": {
+                "type": "array",
+                "items": {
+                  "type": "record",
+                  "name": "Issue",
+                  "fields": [
+                    {
+                      "name": "type",
+                      "type": {
+                        "type": "enum",
+                        "name": "IssueType",
+                        "symbols": ["ERROR", "WARNING", "INFO"]
+                      }
+                    },
+                    {"name": "code", "type": "string"},
+                    {"name": "message", "type": "string"},
+                    {"name": "field", "type": ["null", "string"], "default": null}
+                  ]
+                }
+              },
+              "default": []
+            },
+            {
+              "name": "prior_auth_required",
+              "type": "boolean",
+              "default": false
+            },
+            {
+              "name": "bundled_services",
+              "type": {
+                "type": "array",
+                "items": {
+                  "type": "record",
+                  "name": "BundledService",
+                  "fields": [
+                    {"name": "primary_cpt", "type": "string"},
+                    {"name": "bundled_cpts", "type": {"type": "array", "items": "string"}}
+                  ]
+                }
+              },
+              "default": []
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "summary",
+      "type": {
+        "type": "record",
+        "name": "ScrubSummary",
+        "fields": [
+          {"name": "total_claims", "type": "int"},
+          {"name": "passed_claims", "type": "int"},
+          {"name": "failed_claims", "type": "int"},
+          {"name": "warnings", "type": "int"},
+          {"name": "processing_time_ms", "type": "long"}
+        ]
+      }
+    },
+    {
+      "name": "metadata",
+      "type": {
+        "type": "record",
+        "name": "EventMetadata",
+        "fields": [
+          {"name": "source", "type": "string", "default": "medvault-scrubber"},
+          {"name": "version", "type": "string", "default": "1.0.0"},
+          {"name": "correlation_id", "type": ["null", "string"], "default": null},
+          {"name": "user_id", "type": ["null", "string"], "default": null}
+        ]
+      }
+    }
+  ]
+}
