@@ -310,7 +310,7 @@ Documentation Rules:
 
 ## AI Prompt Templates
 
-### Underwriting AI Prompts
+### 1. Underwriting AI Prompts
 
 #### Risk Assessment Prompt
 ```
@@ -350,7 +350,7 @@ Apply the following rules:
 Output: Detailed premium breakdown with component explanations.
 ```
 
-### Claims Processing AI Prompts
+### 2. Claims Processing AI Prompts
 
 #### Coverage Analysis Prompt
 ```
@@ -390,7 +390,27 @@ Determine:
 Include detailed calculation breakdown and reasoning.
 ```
 
-### Regulatory Compliance AI Prompts
+### 3. Customer Service AI Prompts
+
+#### Policy Explanation Prompt
+```
+Explain the following policy provisions in plain language:
+
+Policy Language: [COMPLEX_LANGUAGE]
+Customer Question: [CUSTOMER_INQUIRY]
+Customer Profile: [CUSTOMER_DATA]
+
+Provide:
+1. Simplified explanation of coverage
+2. Relevant examples or scenarios
+3. Important limitations or exclusions
+4. Next steps or recommendations
+5. Additional resources if helpful
+
+Use customer-appropriate language and avoid insurance jargon.
+```
+
+### 4. Compliance and Regulatory AI Prompts
 
 #### Compliance Check Prompt
 ```
@@ -410,24 +430,45 @@ Verify compliance with:
 Output compliance status with specific violation citations if applicable.
 ```
 
-### Customer Service AI Prompts
+### 5. Bond Insurance Specialized AI Prompts
 
-#### Policy Explanation Prompt
+#### Municipal Credit Analysis Prompt
 ```
-Explain the following policy provisions in plain language:
+Conduct comprehensive credit analysis for municipal bond insurance:
 
-Policy Language: [COMPLEX_LANGUAGE]
-Customer Question: [CUSTOMER_INQUIRY]
-Customer Profile: [CUSTOMER_DATA]
+Municipal Entity: [ENTITY_NAME]
+Bond Purpose: [BOND_PURPOSE]
+Bond Amount: [BOND_AMOUNT]
+Financial Data: [FINANCIAL_METRICS]
 
-Provide:
-1. Simplified explanation of coverage
-2. Relevant examples or scenarios
-3. Important limitations or exclusions
-4. Next steps or recommendations
-5. Additional resources if helpful
+Analyze:
+1. Economic base and diversity assessment
+2. Financial performance and stability
+3. Debt structure and capacity analysis
+4. Revenue predictability and trends
+5. Credit enhancement recommendations
 
-Use customer-appropriate language and avoid insurance jargon.
+Output structured credit assessment with rating recommendation.
+```
+
+### 6. Risk Assessment AI Prompts
+
+#### Comprehensive Risk Analysis Prompt
+```
+Perform detailed risk assessment across all categories:
+
+Risk Profile Data: [COMPREHENSIVE_DATA]
+Coverage Requirements: [COVERAGE_SPECS]
+Regulatory Context: [JURISDICTION_RULES]
+
+Evaluate:
+1. Primary risk factors and quantification
+2. Secondary and emerging risk identification
+3. Risk mitigation strategies and costs
+4. Monitoring and control requirements
+5. Overall risk tolerance recommendations
+
+Provide risk score with confidence intervals and action plan.
 ```
 
 ---
