@@ -1,0 +1,202 @@
+{
+  "formularyRules": {
+    "description": "Comprehensive formulary management and drug coverage rules",
+    "tierStructure": {
+      "standardTiers": {
+        "tier1": {
+          "description": "Generic drugs - lowest cost",
+          "costSharing": "lowest_copay_or_coinsurance",
+          "requirements": "Generic must be available"
+        },
+        "tier2": {
+          "description": "Preferred brand - moderate cost",
+          "costSharing": "moderate_copay_or_coinsurance",
+          "requirements": "Brand with favorable contract terms"
+        },
+        "tier3": {
+          "description": "Non-preferred brand - higher cost",
+          "costSharing": "higher_copay_or_coinsurance",
+          "requirements": "Brand without favorable terms"
+        },
+        "tier4": {
+          "description": "Specialty drugs - highest cost",
+          "costSharing": "percentage_coinsurance_typically",
+          "requirements": "High-cost or complex administration"
+        }
+      },
+      "medicareSpecific": {
+        "tier5": {
+          "description": "Specialty tier with 33% coinsurance cap",
+          "costSharing": "33_percent_max_through_coverage_gap"
+        },
+        "coverageGap": {
+          "description": "Donut hole coverage",
+          "brandCoverage": "25_percent_discount",
+          "genericCoverage": "75_percent_discount"
+        }
+      }
+    },
+    "stepTherapy": {
+      "definition": "Requirement to try lower-cost alternatives first",
+      "implementation": {
+        "failFirst": "Must try and fail specified alternatives",
+        "duration": "Minimum trial period typically 30-90 days",
+        "documentation": "Inadequate response or adverse effects required"
+      },
+      "commonPatterns": {
+        "ppi_therapy": {
+          "step1": "omeprazole_generic",
+          "step2": "pantoprazole_generic", 
+          "step3": "brand_ppi_if_needed",
+          "exceptions": "GERD complications or specific contraindications"
+        },
+        "tnf_inhibitors": {
+          "step1": "methotrexate_adequate_trial",
+          "step2": "sulfasalazine_or_alternative_dmard",
+          "step3": "biologic_tnf_inhibitor",
+          "exceptions": "Methotrexate contraindication or severe disease"
+        },
+        "adhd_medications": {
+          "step1": "generic_stimulants",
+          "step2": "brand_stimulants",
+          "step3": "non_stimulant_alternatives",
+          "exceptions": "Previous trials documented in medical records"
+        }
+      },
+      "overrideCriteria": {
+        "clinical": [
+          "Previous trial and documented failure",
+          "Contraindication to required step",
+          "Drug interaction with required step",
+          "Allergy to required step medication"
+        ],
+        "documentation": [
+          "Physician letter of medical necessity",
+          "Previous pharmacy records",
+          "Clinical notes showing trial and outcome",
+          "Allergy or adverse reaction documentation"
+        ]
+      }
+    },
+    "priorAuthorization": {
+      "triggers": {
+        "high_cost": "Typically drugs >$1000/month",
+        "abuse_potential": "Controlled substances and frequently abused drugs",
+        "safety_monitoring": "Drugs requiring regular lab monitoring",
+        "off_label": "Uses not FDA approved",
+        "experimental": "Newly approved or limited evidence"
+      },
+      "criteria": {
+        "indication": "FDA approved indication or compendia support",
+        "dosing": "Within FDA approved dosing ranges",
+        "duration": "Appropriate treatment duration",
+        "contraindications": "No absolute contraindications present",
+        "monitoring": "Appropriate monitoring plan in place"
+      },
+      "approval_duration": {
+        "acute_conditions": "30-90 days typical",
+        "chronic_conditions": "6-12 months typical",
+        "oncology": "Per treatment protocol duration",
+        "mental_health": "3-6 months with titration allowance"
+      }
+    },
+    "quantityLimits": {
+      "rationale": "Prevent overuse, abuse, or inappropriate stockpiling",
+      "common_applications": {
+        "controlled_substances": {
+          "opioids": "Typically 30 day supply maximum",
+          "benzodiazepines": "30 day supply with prescriber limits",
+          "stimulants": "30 day supply with monthly pickup"
+        },
+        "expensive_medications": {
+          "specialty_drugs": "30 day supply to prevent waste",
+          "biologics": "Per protocol administration schedule",
+          "oncology": "Per cycle with waste consideration"
+        },
+        "abuse_potential": {
+          "sumatriptan": "12 tablets per 30 days",
+          "zolpidem": "30 tablets per 30 days",
+          "carisoprodol": "60 tablets per 30 days"
+        }
+      },
+      "exceptions": {
+        "vacation_supply": "Up to 90 days with advance approval",
+        "travel_coverage": "Extended supply with travel documentation",
+        "provider_override": "Clinical rationale for higher quantities"
+      }
+    },
+    "ageRestrictions": {
+      "pediatric_limitations": [
+        "Certain antidepressants limited to adults",
+        "Some pain medications age-restricted",
+        "Adult formulations not appropriate for children"
+      ],
+      "geriatric_considerations": [
+        "Beers Criteria inappropriate medications",
+        "Dose adjustments for renal function",
+        "Polypharmacy interaction screening"
+      ]
+    },
+    "clinicalEdits": {
+      "drug_drug_interactions": {
+        "description": "Automated screening for dangerous combinations",
+        "severity_levels": ["contraindicated", "major", "moderate", "minor"],
+        "overrides": "Prescriber acknowledgment or alternative required"
+      },
+      "duplicate_therapy": {
+        "description": "Prevention of duplicate drug classes",
+        "same_class": "Typically blocked unless different indications",
+        "therapeutic_duplication": "Similar mechanisms of action flagged"
+      },
+      "diagnosis_drug_mismatch": {
+        "description": "Ensure indication supports drug choice",
+        "icd10_matching": "Diagnosis codes must support drug indication",
+        "off_label_tracking": "Document off-label uses appropriately"
+      }
+    },
+    "specialtyPharmacy": {
+      "definition": "High-cost, complex drugs requiring special handling",
+      "inclusion_criteria": [
+        "Cost >$600/month typically",
+        "Requires special storage (refrigeration)",
+        "Complex administration (injection, infusion)",
+        "Intensive monitoring required",
+        "Limited distribution network"
+      ],
+      "services_provided": [
+        "Patient education and training",
+        "Adherence monitoring",
+        "Side effect management",
+        "Coordination with healthcare providers",
+        "Insurance authorization support"
+      ],
+      "common_medications": [
+        "Biologics for autoimmune conditions",
+        "Oncology oral and injectable drugs", 
+        "Rare disease medications",
+        "Complex HIV regimens",
+        "Growth hormones and fertility drugs"
+      ]
+    },
+    "accumulatorPrograms": {
+      "description": "Programs that affect patient out-of-pocket calculations",
+      "types": {
+        "copay_accumulator": {
+          "mechanism": "Copay assistance doesn't count toward deductible/OOP",
+          "impact": "Patient pays full deductible even with manufacturer coupons",
+          "prevalence": "Increasing in commercial plans"
+        },
+        "copay_maximizer": {
+          "mechanism": "Plan pays minimum, patient assistance pays maximum",
+          "impact": "Shifts more cost to manufacturer programs",
+          "controversy": "Patient advocacy concerns about transparency"
+        }
+      },
+      "disclosure_requirements": [
+        "Plan documents must describe programs",
+        "Patient notification when applicable",
+        "Pharmacy communication about impact"
+      ]
+    }
+  }
+}

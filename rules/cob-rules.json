@@ -1,0 +1,146 @@
+{
+  "cobRules": {
+    "description": "Coordination of Benefits rules for determining payment order",
+    "primaryDetermination": {
+      "employeeVsSpouse": {
+        "rule": "Employee's plan is primary for employee",
+        "exception": "Court order may override",
+        "selfEmployed": "Treated as employee for COB purposes"
+      },
+      "dependentChildren": {
+        "birthdayRule": {
+          "description": "Parent with earlier birthday in calendar year is primary",
+          "implementation": "Month and day only, ignore year",
+          "tieBreaker": "If same birthday, plan covering parent longer is primary"
+        },
+        "divorceOverride": {
+          "description": "Court order supersedes birthday rule",
+          "custody": "Custodial parent's plan typically primary",
+          "courtOrder": "Specific assignment takes precedence"
+        },
+        "activeVsInactive": {
+          "rule": "Active coverage beats COBRA or retiree coverage",
+          "exception": "Court order may specify inactive plan as primary"
+        }
+      },
+      "medicare": {
+        "ageIn": {
+          "working": "Large employer plan primary if >20 employees",
+          "notWorking": "Medicare primary",
+          "cobra": "Medicare primary over COBRA"
+        },
+        "disability": {
+          "working": "Large employer plan primary if >100 employees",
+          "notWorking": "Medicare primary",
+          "familyCoverage": "Group plan rules apply to family coverage"
+        },
+        "esrd": {
+          "coordinationPeriod": "30 months from eligibility or transplant",
+          "duringCoordination": "Group plan primary",
+          "afterCoordination": "Medicare primary"
+        }
+      },
+      "medicaid": {
+        "rule": "Always payer of last resort",
+        "exceptions": [
+          "Indian Health Service may be secondary to Medicaid",
+          "State-specific variations exist"
+        ],
+        "thirdPartyLiability": "Must exhaust all other coverage first"
+      }
+    },
+    "claimProcessing": {
+      "primaryClaim": {
+        "process": "Submit to primary payer first",
+        "payment": "Primary pays according to own benefits",
+        "eob": "Generate EOB showing primary payment and patient responsibility"
+      },
+      "secondaryClaim": {
+        "process": "Submit to secondary with primary EOB",
+        "payment": "Secondary pays up to remaining allowed amount",
+        "limitation": "Combined payments cannot exceed 100% of charges",
+        "patientResponsibility": "Usually reduced but not eliminated"
+      },
+      "tertiaryAndBeyond": {
+        "process": "Continue sequence until benefits exhausted",
+        "documentation": "Each payer's EOB required for next level",
+        "finalPatient": "Patient responsible for any remaining balance"
+      }
+    },
+    "specialSituations": {
+      "workersCompensation": {
+        "priority": "Primary for work-related injuries/illnesses",
+        "scope": "Only covers work-related conditions",
+        "healthPlan": "Secondary for work-related, primary for non-work-related"
+      },
+      "autoInsurance": {
+        "pip_medpay": "May be primary depending on state no-fault laws",
+        "liability": "Primary when other party at fault",
+        "healthPlan": "Coordinate based on state law and plan provisions"
+      },
+      "va_tricare": {
+        "va": "Primary for service-connected disabilities",
+        "tricare": "Coordinate with civilian coverage based on sponsor status",
+        "dualEligible": "Specific coordination rules apply"
+      },
+      "studentPlans": {
+        "hardWaiver": "Student plan becomes secondary to parent plan",
+        "noParentCoverage": "Student plan becomes primary",
+        "ageOut": "Student plan may continue as primary after parent age-out"
+      }
+    },
+    "subrogation": {
+      "definition": "Right of payer to recover costs from responsible third party",
+      "applications": [
+        "Auto accidents with liable party",
+        "Slip and fall with property owner liability",
+        "Medical malpractice settlements",
+        "Product liability cases"
+      ],
+      "process": {
+        "notification": "Member must notify payer of potential third party liability",
+        "cooperation": "Member must cooperate with recovery efforts",
+        "reimbursement": "Recovery funds first reimburse payer, then member"
+      },
+      "limitations": {
+        "makeWhole": "Some states require member be 'made whole' first",
+        "commonFund": "Attorney fees may be shared proportionally",
+        "negotiations": "Settlement allocation between medical and other damages"
+      }
+    },
+    "implementationChecklist": {
+      "eligibilitySystem": [
+        "Track all active coverages for member",
+        "Implement birthday rule logic",
+        "Monitor Medicare eligibility changes",
+        "Flag potential COB scenarios"
+      ],
+      "claimsProcessing": [
+        "Sequence claims to correct primary payer",
+        "Attach primary EOB to secondary submissions",
+        "Calculate appropriate secondary payments",
+        "Generate accurate member EOBs"
+      ],
+      "memberCommunication": [
+        "Explain COB rules in plain language",
+        "Provide coordination of benefits questionnaire",
+        "Update member when primary status changes",
+        "Educate on subrogation obligations"
+      ]
+    },
+    "auditPoints": {
+      "commonErrors": [
+        "Incorrect primary determination",
+        "Missing primary EOB on secondary claims",
+        "Over-payment by secondary payer",
+        "Failure to pursue subrogation"
+      ],
+      "documentation": [
+        "COB questionnaire completion",
+        "Primary payer verification",
+        "EOB retention and forwarding",
+        "Subrogation file maintenance"
+      ]
+    }
+  }
+}

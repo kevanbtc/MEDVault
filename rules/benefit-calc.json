@@ -1,0 +1,95 @@
+{
+  "benefitCalculation": {
+    "description": "Rules for calculating patient financial responsibility",
+    "deductibleRules": {
+      "application": {
+        "order": ["deductible", "copay_or_coinsurance"],
+        "preventiveExempt": true,
+        "familyEmbedded": {
+          "description": "Individual deductible within family",
+          "individualMax": "individual_deductible_amount",
+          "familyRequirement": "no_individual_can_exceed_individual_deductible"
+        }
+      },
+      "accumulators": {
+        "inNetwork": "separate_from_oon",
+        "outOfNetwork": "separate_accumulator",
+        "familySharing": true,
+        "resetPeriod": "calendar_year"
+      }
+    },
+    "copayVsCoinsurance": {
+      "copay": {
+        "description": "Fixed dollar amount",
+        "applicableServices": ["office_visits", "emergency", "urgent_care"],
+        "deductibleRequired": false
+      },
+      "coinsurance": {
+        "description": "Percentage of allowed amount",
+        "applicableServices": ["inpatient", "outpatient_surgery", "imaging"],
+        "deductibleRequired": true,
+        "calculationBase": "allowed_amount_after_deductible"
+      }
+    },
+    "outOfPocketMaximum": {
+      "includes": [
+        "deductible",
+        "copays", 
+        "coinsurance"
+      ],
+      "excludes": [
+        "premiums",
+        "balance_billing",
+        "non_covered_services",
+        "out_of_network_excess"
+      ],
+      "familyAggregation": {
+        "method": "individual_then_family",
+        "rule": "individual_stops_at_individual_max"
+      }
+    },
+    "networkDifferentials": {
+      "inNetwork": {
+        "allowedAmount": "contracted_rate",
+        "patientResponsibility": "copay_or_coinsurance_only"
+      },
+      "outOfNetwork": {
+        "allowedAmount": "lesser_of_billed_or_usual_customary",
+        "patientResponsibility": "higher_cost_sharing_plus_balance",
+        "balanceBilling": {
+          "allowed": true,
+          "exceptions": ["emergency_services", "nsa_applicable_services"]
+        }
+      }
+    },
+    "specialCalculations": {
+      "observationVsInpatient": {
+        "observation": {
+          "benefit": "outpatient",
+          "costSharing": "outpatient_coinsurance",
+          "drugs": "part_b_if_medicare"
+        },
+        "inpatient": {
+          "benefit": "inpatient",
+          "costSharing": "inpatient_copay_or_coinsurance",
+          "drugs": "included_in_drg"
+        }
+      },
+      "globalPeriods": {
+        "major": "90_days",
+        "minor": "10_days",
+        "endoscopy": "0_days",
+        "includedServices": [
+          "routine_follow_up_visits",
+          "postoperative_complications",
+          "dressing_changes"
+        ],
+        "excludes": [
+          "unrelated_conditions",
+          "return_to_or_complications",
+          "immunizations"
+        ]
+      }
+    }
+  }
+}

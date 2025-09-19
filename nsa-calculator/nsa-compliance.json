@@ -1,0 +1,131 @@
+{
+  "nsaCalculator": {
+    "description": "No Surprises Act patient liability calculator and compliance rules",
+    "version": "1.0",
+    "effectiveDate": "2022-01-01",
+    "applicableScenarios": {
+      "emergency_services": {
+        "description": "Emergency services at out-of-network facilities",
+        "patientProtection": true,
+        "costSharingBasis": "in_network_rate",
+        "balanceBillingProhibited": true,
+        "applicableServices": [
+          "Emergency department visits",
+          "Emergency physician services", 
+          "Emergency facility fees",
+          "Ancillary services during emergency care"
+        ]
+      },
+      "non_emergency_at_in_network_facility": {
+        "description": "Non-emergency services by out-of-network providers at in-network facilities",
+        "patientProtection": true,
+        "costSharingBasis": "in_network_rate",
+        "balanceBillingProhibited": true,
+        "requiredNotice": {
+          "timeframe": "72_hours_before_service",
+          "content": "Provider network status and estimated costs",
+          "patientConsent": "required_for_waiver"
+        },
+        "commonScenarios": [
+          "Anesthesiologist at in-network hospital",
+          "Assistant surgeon at in-network facility",
+          "Emergency physician coverage",
+          "On-call specialist consultations"
+        ]
+      },
+      "air_ambulance": {
+        "description": "Air ambulance services",
+        "patientProtection": true,
+        "costSharingBasis": "in_network_rate", 
+        "balanceBillingProhibited": true,
+        "noNoticeRequired": true
+      }
+    },
+    "exclusions": {
+      "ground_ambulance": {
+        "description": "Ground ambulance not covered by NSA",
+        "stateLawsApply": true,
+        "patientLiability": "potentially_unlimited"
+      },
+      "post_stabilization_with_notice": {
+        "description": "Post-stabilization services with proper notice and consent",
+        "noticeRequired": "72_hours_or_as_practicable",
+        "consentRequired": true,
+        "balanceBillingAllowed": "with_proper_consent"
+      }
+    },
+    "calculationLogic": {
+      "recognizedAmount": {
+        "determinationMethods": [
+          "qualifying_payment_amount", 
+          "all_payer_database_amount",
+          "independent_database_amount"
+        ],
+        "qualifyingPaymentAmount": {
+          "definition": "Median contracted rate for same/similar service in geographic area",
+          "adjustments": [
+            "CPI-U medical inflation since 2019",
+            "Case-mix adjustments if applicable"
+          ]
+        }
+      },
+      "patientCostSharing": {
+        "calculation": "apply_in_network_cost_sharing_to_recognized_amount",
+        "includes": [
+          "deductible",
+          "copayment", 
+          "coinsurance"
+        ],
+        "excludes": [
+          "balance_billing",
+          "amounts_above_recognized_amount"
+        ]
+      }
+    },
+    "disputeResolution": {
+      "negotiation": {
+        "timeframe": "30_days_from_bill_transmission",
+        "goodFaithRequirement": true,
+        "directNegotiation": "between_provider_and_payer"
+      },
+      "independentDispute": {
+        "eligibility": {
+          "thresholds": {
+            "2022": 400,
+            "2023": 425,
+            "2024": 450
+          },
+          "batchingAllowed": "same_provider_payer_similar_items"
+        },
+        "process": {
+          "initiationFee": 50,
+          "timeframe": "30_days_from_negotiation_failure",
+          "decision": "binding_on_parties",
+          "standardsForDecision": [
+            "qualifying_payment_amount",
+            "market_rates",
+            "provider_experience",
+            "case_complexity"
+          ]
+        }
+      }
+    },
+    "implementationChecklist": {
+      "eligibilitySystem": [
+        "Flag NSA-applicable services",
+        "Identify in-network facility with OON provider scenarios",
+        "Emergency service identification"
+      ],
+      "costSharingCalculation": [
+        "Apply in-network cost sharing to recognized amount",
+        "Block balance billing for NSA services",
+        "Accurate EOB generation showing protected services"
+      ],
+      "providerNotifications": [
+        "Generate NSA compliance flags for claims",
+        "Alert providers to notice requirements", 
+        "Track consent for waiver scenarios"
+      ]
+    }
+  }
+}

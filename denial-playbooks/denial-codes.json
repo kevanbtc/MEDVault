@@ -1,0 +1,132 @@
+{
+  "denialCodes": {
+    "description": "Standard denial reason codes with appeal guidance",
+    "categories": {
+      "medical_necessity": {
+        "CO-50": {
+          "description": "Not medically necessary",
+          "commonReasons": [
+            "Does not meet clinical criteria",
+            "Conservative treatment not attempted",
+            "Insufficient documentation"
+          ],
+          "appealStrategy": {
+            "requiredDocumentation": [
+              "Clinical notes supporting medical necessity",
+              "Published clinical guidelines or studies",
+              "Physician letter of medical necessity",
+              "Evidence of failed conservative treatments"
+            ],
+            "timeframe": "60 days from denial date",
+            "peerReviewAvailable": true
+          },
+          "preventionTips": [
+            "Include detailed clinical rationale in initial request",
+            "Reference applicable clinical guidelines",
+            "Document previous treatments and outcomes"
+          ]
+        },
+        "CO-151": {
+          "description": "Experimental/Investigational",
+          "commonReasons": [
+            "Not FDA approved for indication",
+            "Not supported by peer-reviewed literature",
+            "Clinical trial phase drug/device"
+          ],
+          "appealStrategy": {
+            "requiredDocumentation": [
+              "FDA approval status",
+              "Compendial support (NCCN, DRUGDEX, etc.)",
+              "Peer-reviewed literature",
+              "Patient-specific clinical rationale"
+            ],
+            "compendiaAccepted": ["NCCN", "DRUGDEX", "AHFS-DI", "Micromedex"],
+            "timeframe": "60 days from denial date"
+          }
+        }
+      },
+      "administrative": {
+        "CO-197": {
+          "description": "Precertification/notification absent",
+          "appealStrategy": {
+            "retrospectiveAuth": "may_be_available_for_emergency",
+            "requiredDocumentation": [
+              "Emergency room records",
+              "Physician attestation of urgent need",
+              "Timeline of events"
+            ],
+            "successRate": "low_for_non_emergency"
+          }
+        },
+        "CO-204": {
+          "description": "This service/equipment/drug is not covered under the patient's current benefit plan",
+          "subCategories": {
+            "exclusion": "Service specifically excluded by plan",
+            "benefit_exhaustion": "Annual or lifetime limit reached",
+            "not_covered_indication": "Service covered but not for this indication"
+          }
+        }
+      },
+      "network": {
+        "CO-B13": {
+          "description": "Previously paid. Payment for this claim/service may have been provided in a previous payment",
+          "investigation": [
+            "Check for duplicate claims",
+            "Verify previous payment details",
+            "Confirm service dates and providers"
+          ]
+        }
+      },
+      "patient_responsibility": {
+        "PR-1": {
+          "description": "Deductible amount",
+          "patientAction": "Apply to deductible accumulator",
+          "appealRights": "limited_to_calculation_errors"
+        },
+        "PR-2": {
+          "description": "Coinsurance amount",
+          "calculationBasis": "percentage_of_allowed_amount",
+          "appealRights": "limited_to_calculation_errors"
+        },
+        "PR-3": {
+          "description": "Copayment amount",
+          "appealRights": "none_unless_benefit_misapplied"
+        }
+      }
+    },
+    "appealGuidance": {
+      "internalAppeal": {
+        "levels": {
+          "first": {
+            "timeframe": "60 days from denial",
+            "reviewedBy": "different_clinical_staff",
+            "documentation": "submit_additional_clinical_info"
+          },
+          "second": {
+            "timeframe": "60 days from first level denial",
+            "reviewedBy": "medical_director_or_designated_physician",
+            "finalInternal": true
+          }
+        },
+        "expedited": {
+          "criteria": "serious_jeopardy_to_life_or_health",
+          "timeframe": "72 hours",
+          "availableFor": "all_medical_necessity_denials"
+        }
+      },
+      "externalReview": {
+        "eligibility": {
+          "acaPlans": "available_after_internal_appeals_exhausted",
+          "erisa": "may_skip_to_external_if_plan_waives_internal",
+          "medicare": "different_process_via_cms"
+        },
+        "process": {
+          "requestTimeframe": "4 months after final internal denial",
+          "reviewTimeframe": "45 days standard, 72 hours expedited",
+          "costToPatient": "none",
+          "bindingDecision": true
+        }
+      }
+    }
+  }
+}

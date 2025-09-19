@@ -1,0 +1,85 @@
+{
+  "networkRules": {
+    "description": "Network participation and coverage rules",
+    "networkDetermination": {
+      "inNetwork": {
+        "criteria": [
+          "Active contract with payer",
+          "Credentialing current",
+          "NPI in network directory",
+          "Service location contracted"
+        ],
+        "verification": {
+          "method": "real_time_eligibility_270_271",
+          "fallback": "payer_website_directory",
+          "documentation": "contract_effective_dates"
+        }
+      },
+      "outOfNetwork": {
+        "defaultAssumption": "if_not_verified_in_network",
+        "emergencyException": true,
+        "coverageRules": {
+          "hmo": "no_coverage_except_emergency",
+          "ppo": "reduced_benefits_higher_cost_sharing",
+          "epo": "no_coverage_except_emergency",
+          "pos": "coverage_with_referral_only"
+        }
+      }
+    },
+    "emergencyServices": {
+      "definition": "Services to evaluate and stabilize emergency medical condition",
+      "networkRules": "treated_as_in_network_regardless_of_provider",
+      "costSharing": "in_network_cost_sharing_applies",
+      "priorAuth": "not_required_for_emergency_services",
+      "stabilizationRule": "until_patient_stable_for_transfer"
+    },
+    "noSurprisesAct": {
+      "applicableServices": [
+        "emergency_services_at_oon_facility",
+        "non_emergency_services_at_in_network_facility_by_oon_provider",
+        "air_ambulance_services"
+      ],
+      "patientProtection": {
+        "costSharing": "based_on_in_network_amount",
+        "balanceBilling": "prohibited",
+        "advanceNoticeRequired": "non_emergency_situations_72_hours"
+      },
+      "paymentDetermination": {
+        "method": "negotiation_then_idr_arbitration",
+        "timeframes": {
+          "negotiation": "30_days",
+          "idr_eligibility": "4_days_after_negotiation_failure",
+          "idr_decision": "30_days"
+        }
+      },
+      "exclusions": [
+        "ground_ambulance_services",
+        "post_stabilization_services_with_notice_and_consent"
+      ]
+    },
+    "ancillaryServices": {
+      "definition": "Services provided by specialists at in-network facilities",
+      "commonScenarios": [
+        "anesthesiologist_at_in_network_hospital",
+        "emergency_physician_at_in_network_ed",
+        "radiologist_reading_at_in_network_facility",
+        "pathologist_services_at_in_network_hospital"
+      ],
+      "nsaCoverage": true,
+      "patientResponsibility": "in_network_cost_sharing_only"
+    },
+    "facilityVsProvider": {
+      "facility": {
+        "examples": ["hospital", "asc", "imaging_center"],
+        "networkStatus": "determined_by_facility_contract",
+        "billing": "institutional_claim_837i"
+      },
+      "provider": {
+        "examples": ["physician", "surgeon", "anesthesiologist"],
+        "networkStatus": "determined_by_individual_provider_contract",
+        "billing": "professional_claim_837p",
+        "facilityRelationship": "may_be_different_network_status"
+      }
+    }
+  }
+}

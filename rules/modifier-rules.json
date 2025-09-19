@@ -1,0 +1,132 @@
+{
+  "modifierRules": {
+    "description": "CPT modifier validation and application rules",
+    "globalRules": {
+      "modifierSequence": "Most restrictive modifier first",
+      "multipleModifiers": "Up to 4 modifiers per line item",
+      "bilateralProcedures": "Use 50 modifier or RT/LT appropriately"
+    },
+    "professionalVsFacility": {
+      "modifier26": {
+        "description": "Professional component only",
+        "applicableServices": "Diagnostic tests with professional/technical split",
+        "examples": ["Radiology interpretation", "EKG interpretation", "Pathology review"],
+        "validation": {
+          "cannotCombineWith": ["TC", "53"],
+          "requiresSeparateBilling": "Professional and technical must be separate claims"
+        }
+      },
+      "modifierTC": {
+        "description": "Technical component only", 
+        "applicableServices": "Equipment and technician services without interpretation",
+        "examples": ["X-ray technical", "Lab processing", "EKG technical"],
+        "validation": {
+          "cannotCombineWith": ["26"],
+          "requiresEquipment": true
+        }
+      }
+    },
+    "siteOfService": {
+      "modifier53": {
+        "description": "Discontinued procedure",
+        "applicableWhen": "Procedure started but could not be completed",
+        "reimbursementRules": {
+          "beforeAnesthesia": "No payment or reduced payment",
+          "afterAnesthesia": "Reduced payment based on stage completed"
+        },
+        "documentation": "Reason for discontinuation required"
+      },
+      "modifier59": {
+        "description": "Distinct procedural service",
+        "purpose": "Override NCCI edits when procedures are truly distinct",
+        "appropriateUse": [
+          "Different session or encounter",
+          "Different procedure or surgery", 
+          "Different site or organ system",
+          "Separate incision/excision"
+        ],
+        "inappropriateUse": [
+          "Same session routine unbundling",
+          "Different provider performing bundled service"
+        ]
+      }
+    },
+    "anesthesia": {
+      "modifierAA": {
+        "description": "Anesthesia services performed personally by anesthesiologist",
+        "requiresPhysician": true,
+        "documentation": "Anesthesiologist must be present for entire procedure"
+      },
+      "modifierQK": {
+        "description": "Medical direction of two, three, or four concurrent anesthesia procedures",
+        "supervision": "Anesthesiologist medically directing CRNAs",
+        "limits": "Maximum 4 concurrent cases"
+      }
+    },
+    "drugWaste": {
+      "modifierJW": {
+        "description": "Drug amount discarded/not administered",
+        "applicableServices": "Single-use vial drugs with waste",
+        "billing": "Separate line item for discarded amount",
+        "documentation": "Amount discarded must be documented in medical record"
+      },
+      "modifierJZ": {
+        "description": "Zero drug amount discarded/not administered", 
+        "purpose": "Indicate complete vial utilization",
+        "when_required": "Some payers require to show no waste occurred"
+      }
+    },
+    "emergencyServices": {
+      "modifierER": {
+        "description": "Items and services furnished by a provider-based emergency department",
+        "applicableServices": "Hospital emergency department services",
+        "purpose": "Identify services subject to NSA protection"
+      }
+    },
+    "preventive": {
+      "modifier33": {
+        "description": "Preventive services",
+        "purpose": "Identify ACA preventive services for no cost-sharing",
+        "applicableServices": "USPSTF A/B rated services",
+        "costSharing": "Prohibited when used correctly"
+      }
+    },
+    "validationRules": {
+      "siteOfServiceAlignment": {
+        "description": "Modifier must align with place of service code",
+        "examples": {
+          "modifier26_POS11": "Professional interpretation in office setting",
+          "modifierTC_POS22": "Technical component in outpatient hospital"
+        }
+      },
+      "procedureSpecific": {
+        "globalPeriods": {
+          "description": "Modifiers affect global period application",
+          "modifier79": "Unrelated procedure during global period",
+          "modifier78": "Related procedure during global period"
+        }
+      },
+      "payerSpecific": {
+        "medicare": {
+          "modifierGY": "Statutorily excluded service",
+          "modifierGZ": "Service expected to be denied"
+        },
+        "commercial": {
+          "variations": "Some modifiers accepted differently by payer"
+        }
+      }
+    },
+    "auditFlags": {
+      "highRiskCombinations": [
+        "Multiple 59 modifiers on same date",
+        "59 with same CPT code multiple times",
+        "26/TC without appropriate global split"
+      ],
+      "documentation": [
+        "JW modifier requires waste documentation",
+        "53 modifier requires reason for discontinuation",
+        "59 modifier requires distinct service justification"
+      ]
+    }
+  }
+}
