@@ -1,0 +1,199 @@
+{
+  "resourceType": "Questionnaire",
+  "id": "patient-coverage-questionnaire",
+  "meta": {
+    "versionId": "1",
+    "lastUpdated": "2024-01-01T00:00:00Z",
+    "profile": ["http://hl7.org/fhir/StructureDefinition/Questionnaire"]
+  },
+  "url": "http://medvault.com/fhir/Questionnaire/patient-coverage",
+  "version": "1.0.0",
+  "name": "PatientCoverageQuestionnaire",
+  "title": "Patient Coverage and Consent Form",
+  "status": "active",
+  "subjectType": ["Patient"],
+  "date": "2024-01-01",
+  "publisher": "MEDVault",
+  "description": "Simplified questionnaire for patients to understand their coverage and provide consent",
+  "purpose": "To inform patients about their coverage and obtain necessary consents for NSA compliance",
+  "item": [
+    {
+      "linkId": "patient-basic",
+      "text": "Basic Information",
+      "type": "group",
+      "required": true,
+      "item": [
+        {
+          "linkId": "patient-name",
+          "text": "Patient Name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "linkId": "date-of-birth",
+          "text": "Date of Birth",
+          "type": "date",
+          "required": true
+        },
+        {
+          "linkId": "insurance-card-front",
+          "text": "Please upload a photo of the front of your insurance card",
+          "type": "attachment",
+          "required": true
+        },
+        {
+          "linkId": "insurance-card-back",
+          "text": "Please upload a photo of the back of your insurance card",
+          "type": "attachment",
+          "required": false
+        }
+      ]
+    },
+    {
+      "linkId": "coverage-understanding",
+      "text": "Coverage Understanding",
+      "type": "group",
+      "item": [
+        {
+          "linkId": "coverage-explanation",
+          "text": "Coverage Explanation",
+          "type": "display",
+          "_text": {
+            "extension": [
+              {
+                "url": "http://hl7.org/fhir/StructureDefinition/rendering-xhtml",
+                "valueString": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h3>Your Coverage Summary</h3><p>Based on your insurance plan, here's what you need to know:</p><ul><li><strong>In-Network Services:</strong> You pay [X]% after deductible</li><li><strong>Out-of-Network Services:</strong> You pay [Y]% after deductible</li><li><strong>Emergency Services:</strong> Covered at in-network rates regardless of provider</li></ul><p><strong>No Surprises Act Protection:</strong> You are protected from surprise billing for emergency services and certain out-of-network services at in-network facilities.</p></div>"
+              }
+            ]
+          }
+        },
+        {
+          "linkId": "cost-estimate-understood",
+          "text": "I understand the estimated cost for my upcoming service",
+          "type": "boolean",
+          "required": true
+        },
+        {
+          "linkId": "network-status-understood",
+          "text": "I understand whether my provider is in-network or out-of-network",
+          "type": "boolean",
+          "required": true
+        }
+      ]
+    },
+    {
+      "linkId": "financial-responsibility",
+      "text": "Financial Responsibility",
+      "type": "group",
+      "required": true,
+      "item": [
+        {
+          "linkId": "current-deductible",
+          "text": "How much of your annual deductible have you met this year? (Enter 0 if unsure)",
+          "type": "decimal",
+          "required": true
+        },
+        {
+          "linkId": "payment-method",
+          "text": "Preferred payment method for any patient responsibility",
+          "type": "choice",
+          "required": true,
+          "answerOption": [
+            {"valueString": "Credit/Debit Card"},
+            {"valueString": "Bank Transfer"},
+            {"valueString": "Check"},
+            {"valueString": "Payment Plan"},
+            {"valueString": "Other"}
+          ]
+        },
+        {
+          "linkId": "financial-assistance",
+          "text": "Are you interested in learning about financial assistance programs?",
+          "type": "boolean",
+          "required": false
+        }
+      ]
+    },
+    {
+      "linkId": "consent-and-notices",
+      "text": "Consent and Legal Notices",
+      "type": "group",
+      "required": true,
+      "item": [
+        {
+          "linkId": "treatment-consent",
+          "text": "I consent to the proposed treatment/service",
+          "type": "boolean",
+          "required": true
+        },
+        {
+          "linkId": "billing-consent",
+          "text": "I consent to billing my insurance for this service",
+          "type": "boolean",
+          "required": true
+        },
+        {
+          "linkId": "oon-notice-received",
+          "text": "If applicable: I have received notice that my provider is out-of-network",
+          "type": "boolean",
+          "required": false
+        },
+        {
+          "linkId": "oon-consent",
+          "text": "If applicable: I consent to receive care from an out-of-network provider and understand this may result in higher costs",
+          "type": "boolean",
+          "required": false,
+          "enableWhen": [
+            {
+              "question": "oon-notice-received",
+              "operator": "=",
+              "answerBoolean": true
+            }
+          ]
+        },
+        {
+          "linkId": "surprise-billing-notice",
+          "text": "Surprise Billing Protection Notice",
+          "type": "display",
+          "_text": {
+            "extension": [
+              {
+                "url": "http://hl7.org/fhir/StructureDefinition/rendering-xhtml",
+                "valueString": "<div xmlns=\"http://www.w3.org/1999/xhtml\"><h4>Your Rights Under the No Surprises Act</h4><p>You have the right to receive a Good Faith Estimate explaining how much your medical care will cost. You are protected from surprise billing for:</p><ul><li>Emergency services, even if you get them out-of-network</li><li>Certain services from out-of-network providers at in-network facilities</li></ul><p>If you believe you have been wrongly billed, you have the right to dispute the bill.</p><p>For more information visit: <a href=\"https://www.cms.gov/nosurprises\">www.cms.gov/nosurprises</a></p></div>"
+              }
+            ]
+          }
+        },
+        {
+          "linkId": "rights-acknowledged",
+          "text": "I acknowledge that I have read and understand my rights under the No Surprises Act",
+          "type": "boolean",
+          "required": true
+        }
+      ]
+    },
+    {
+      "linkId": "contact-preferences",
+      "text": "Contact Preferences",
+      "type": "group",
+      "item": [
+        {
+          "linkId": "preferred-contact",
+          "text": "How would you prefer to be contacted about billing matters?",
+          "type": "choice",
+          "answerOption": [
+            {"valueString": "Phone"},
+            {"valueString": "Email"},
+            {"valueString": "Text Message"},
+            {"valueString": "Mail"}
+          ]
+        },
+        {
+          "linkId": "contact-value",
+          "text": "Contact Information",
+          "type": "string"
+        }
+      ]
+    }
+  ]
+}

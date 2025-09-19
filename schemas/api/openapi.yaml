@@ -1,0 +1,527 @@
+openapi: 3.0.3
+info:
+  title: MEDVault API
+  description: Healthcare insurance system APIs for scrubbing, NSA calculations, and payer profiles
+  version: 1.0.0
+  contact:
+    name: MEDVault Team
+    email: team@medvault.com
+
+servers:
+  - url: https://api.medvault.com/v1
+    description: Production server
+  - url: https://staging-api.medvault.com/v1
+    description: Staging server
+
+paths:
+  /scrubber/run:
+    post:
+      summary: Run claim scrubbing process
+      description: Process healthcare claims through rule engine for validation and modification
+      tags:
+        - Scrubber
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScrubRequest'
+            example:
+              payer_profile_id: "uhc-ppo-2024"
+              claims:
+                - claim_id: "CLM001"
+                  patient_id: "PAT123"
+                  service_date: "2024-01-15"
+                  cpt_codes: ["99213", "90471"]
+                  modifiers: ["25"]
+                  provider_npi: "1234567890"
+                  facility_npi: "0987654321"
+                  charged_amount: 250.00
+      responses:
+        '200':
+          description: Scrubbing completed successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScrubResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: Validation errors
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  /nsa/calc:
+    post:
+      summary: Calculate NSA patient liability
+      description: Calculate patient liability under No Surprises Act rules
+      tags:
+        - NSA Calculator
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NSACalculationRequest'
+            example:
+              payer_profile_id: "uhc-ppo-2024"
+              service_type: "emergency_care"
+              facility_network_status: "out_of_network"
+              provider_network_status: "out_of_network"
+              charged_amount: 5000.00
+              contracted_rate: 3500.00
+              patient_consent: false
+              patient_plan:
+                deductible_met: 500.00
+                out_of_pocket_met: 1200.00
+      responses:
+        '200':
+          description: NSA calculation completed
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NSACalculationResponse'
+        '400':
+          description: Invalid request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /payer-profiles:
+    get:
+      summary: List available payer profiles
+      description: Retrieve list of available payer profiles
+      tags:
+        - Payer Profiles
+      parameters:
+        - name: type
+          in: query
+          description: Filter by payer type
+          schema:
+            type: string
+            enum: [PPO, HMO, EPO, POS, MEDICARE_ADVANTAGE, MEDICAID_MCO, TRADITIONAL_MEDICARE]
+        - name: region
+          in: query
+          description: Filter by region
+          schema:
+            type: string
+        - name: active_only
+          in: query
+          description: Return only active profiles
+          schema:
+            type: boolean
+            default: true
+      responses:
+        '200':
+          description: List of payer profiles
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayerProfileList'
+
+    post:
+      summary: Create new payer profile
+      description: Create a new payer profile
+      tags:
+        - Payer Profiles
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PayerProfile'
+      responses:
+        '201':
+          description: Payer profile created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayerProfile'
+        '400':
+          description: Invalid profile data
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ValidationError'
+
+  /payer-profiles/{profileId}:
+    get:
+      summary: Get specific payer profile
+      description: Retrieve a specific payer profile by ID
+      tags:
+        - Payer Profiles
+      parameters:
+        - name: profileId
+          in: path
+          required: true
+          description: Payer profile ID
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Payer profile details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayerProfile'
+        '404':
+          description: Profile not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+    put:
+      summary: Update payer profile
+      description: Update an existing payer profile
+      tags:
+        - Payer Profiles
+      parameters:
+        - name: profileId
+          in: path
+          required: true
+          description: Payer profile ID
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PayerProfile'
+      responses:
+        '200':
+          description: Profile updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PayerProfile'
+        '404':
+          description: Profile not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /questionnaires:
+    get:
+      summary: Get FHIR questionnaires
+      description: Retrieve FHIR questionnaires for doctors and patients
+      tags:
+        - Questionnaires
+      parameters:
+        - name: audience
+          in: query
+          description: Target audience
+          schema:
+            type: string
+            enum: [doctor, patient]
+        - name: payer_type
+          in: query
+          description: Filter by payer type
+          schema:
+            type: string
+      responses:
+        '200':
+          description: List of questionnaires
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QuestionnaireList'
+
+components:
+  schemas:
+    ScrubRequest:
+      type: object
+      required:
+        - payer_profile_id
+        - claims
+      properties:
+        payer_profile_id:
+          type: string
+          description: ID of the payer profile to use
+        claims:
+          type: array
+          items:
+            $ref: '#/components/schemas/Claim'
+        options:
+          type: object
+          properties:
+            strict_mode:
+              type: boolean
+              default: false
+            include_warnings:
+              type: boolean
+              default: true
+
+    ScrubResponse:
+      type: object
+      properties:
+        request_id:
+          type: string
+        processed_at:
+          type: string
+          format: date-time
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ScrubResult'
+        summary:
+          type: object
+          properties:
+            total_claims:
+              type: integer
+            passed_claims:
+              type: integer
+            failed_claims:
+              type: integer
+            warnings:
+              type: integer
+
+    ScrubResult:
+      type: object
+      properties:
+        claim_id:
+          type: string
+        status:
+          type: string
+          enum: [passed, failed, warning]
+        original_claim:
+          $ref: '#/components/schemas/Claim'
+        processed_claim:
+          $ref: '#/components/schemas/Claim'
+        applied_rules:
+          type: array
+          items:
+            type: string
+        issues:
+          type: array
+          items:
+            $ref: '#/components/schemas/Issue'
+
+    NSACalculationRequest:
+      type: object
+      required:
+        - payer_profile_id
+        - service_type
+        - facility_network_status
+        - provider_network_status
+        - charged_amount
+      properties:
+        payer_profile_id:
+          type: string
+        service_type:
+          type: string
+        facility_network_status:
+          type: string
+          enum: [in_network, out_of_network]
+        provider_network_status:
+          type: string
+          enum: [in_network, out_of_network]
+        charged_amount:
+          type: number
+          minimum: 0
+        contracted_rate:
+          type: number
+          minimum: 0
+        patient_consent:
+          type: boolean
+          default: false
+        patient_plan:
+          $ref: '#/components/schemas/PatientPlan'
+
+    NSACalculationResponse:
+      type: object
+      properties:
+        calculation_id:
+          type: string
+        input_parameters:
+          $ref: '#/components/schemas/NSACalculationRequest'
+        nsa_applicable:
+          type: boolean
+        qpa_used:
+          type: boolean
+        qualifying_payment_amount:
+          type: number
+        patient_cost_sharing:
+          type: number
+        balance_billing_allowed:
+          type: boolean
+        calculation_method:
+          type: string
+        final_patient_liability:
+          type: number
+        calculation_steps:
+          type: array
+          items:
+            type: object
+        calculated_at:
+          type: string
+          format: date-time
+
+    Claim:
+      type: object
+      required:
+        - claim_id
+        - patient_id
+        - service_date
+        - cpt_codes
+        - charged_amount
+      properties:
+        claim_id:
+          type: string
+        patient_id:
+          type: string
+        service_date:
+          type: string
+          format: date
+        cpt_codes:
+          type: array
+          items:
+            type: string
+        modifiers:
+          type: array
+          items:
+            type: string
+        provider_npi:
+          type: string
+        facility_npi:
+          type: string
+        charged_amount:
+          type: number
+          minimum: 0
+        diagnosis_codes:
+          type: array
+          items:
+            type: string
+
+    PayerProfile:
+      type: object
+      properties:
+        id:
+          type: string
+        schema_version:
+          type: string
+        payer_info:
+          type: object
+        coverage_rules:
+          type: object
+        prior_auth_rules:
+          type: object
+        nsa_rules:
+          type: object
+        eligibility_rules:
+          type: object
+        created_at:
+          type: string
+          format: date-time
+        updated_at:
+          type: string
+          format: date-time
+
+    PayerProfileList:
+      type: object
+      properties:
+        profiles:
+          type: array
+          items:
+            $ref: '#/components/schemas/PayerProfile'
+        total:
+          type: integer
+        page:
+          type: integer
+        per_page:
+          type: integer
+
+    QuestionnaireList:
+      type: object
+      properties:
+        questionnaires:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              title:
+                type: string
+              description:
+                type: string
+              audience:
+                type: string
+              fhir_resource:
+                type: object
+
+    PatientPlan:
+      type: object
+      properties:
+        deductible_met:
+          type: number
+          minimum: 0
+        out_of_pocket_met:
+          type: number
+          minimum: 0
+        plan_year_start:
+          type: string
+          format: date
+
+    Issue:
+      type: object
+      properties:
+        type:
+          type: string
+          enum: [error, warning, info]
+        code:
+          type: string
+        message:
+          type: string
+        field:
+          type: string
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+        code:
+          type: integer
+
+    ValidationError:
+      type: object
+      properties:
+        error:
+          type: string
+        message:
+          type: string
+        validation_errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Issue'
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - BearerAuth: []
+
+tags:
+  - name: Scrubber
+    description: Claim scrubbing and validation
+  - name: NSA Calculator
+    description: No Surprises Act calculations
+  - name: Payer Profiles
+    description: Payer profile management
+  - name: Questionnaires
+    description: FHIR questionnaire management

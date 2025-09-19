@@ -1,0 +1,36 @@
+{
+  "name": "medvault",
+  "version": "1.0.0",
+  "description": "Healthcare insurance system with payer profiles, rule engine, and NSA calculator",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/cli/specrunner.js",
+    "test": "jest",
+    "lint": "eslint src/",
+    "validate": "node src/validators/validate-all.js",
+    "simulate": "node src/simulators/run-simulation.js"
+  },
+  "keywords": [
+    "healthcare",
+    "insurance",
+    "payer",
+    "nsa",
+    "fhir"
+  ],
+  "author": "MEDVault Team",
+  "license": "MIT",
+  "dependencies": {
+    "ajv": "^8.12.0",
+    "ajv-formats": "^3.0.1",
+    "avsc": "^5.7.7",
+    "commander": "^11.0.0",
+    "express": "^4.18.2",
+    "js-yaml": "^4.1.0",
+    "swagger-ui-express": "^4.6.3"
+  },
+  "devDependencies": {
+    "@types/jest": "^29.5.3",
+    "eslint": "^8.45.0",
+    "jest": "^29.6.2"
+  }
+}

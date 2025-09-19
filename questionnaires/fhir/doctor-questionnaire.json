@@ -1,0 +1,205 @@
+{
+  "resourceType": "Questionnaire",
+  "id": "doctor-prior-auth-questionnaire",
+  "meta": {
+    "versionId": "1",
+    "lastUpdated": "2024-01-01T00:00:00Z",
+    "profile": ["http://hl7.org/fhir/StructureDefinition/Questionnaire"]
+  },
+  "url": "http://medvault.com/fhir/Questionnaire/doctor-prior-auth",
+  "version": "1.0.0",
+  "name": "DoctorPriorAuthQuestionnaire",
+  "title": "Doctor Prior Authorization Assessment",
+  "status": "active",
+  "subjectType": ["Patient"],
+  "date": "2024-01-01",
+  "publisher": "MEDVault",
+  "description": "Questionnaire for doctors to assess prior authorization requirements and provide clinical justification",
+  "purpose": "To collect clinical information needed for prior authorization decisions and NSA compliance",
+  "item": [
+    {
+      "linkId": "patient-info",
+      "text": "Patient Information",
+      "type": "group",
+      "required": true,
+      "item": [
+        {
+          "linkId": "patient-id",
+          "text": "Patient ID",
+          "type": "string",
+          "required": true
+        },
+        {
+          "linkId": "member-id",
+          "text": "Insurance Member ID",
+          "type": "string",
+          "required": true
+        },
+        {
+          "linkId": "payer-name",
+          "text": "Insurance Payer",
+          "type": "choice",
+          "required": true,
+          "answerOption": [
+            {"valueString": "UnitedHealthcare PPO"},
+            {"valueString": "Medicare Advantage"},
+            {"valueString": "Medicaid MCO"},
+            {"valueString": "Other"}
+          ]
+        }
+      ]
+    },
+    {
+      "linkId": "service-details",
+      "text": "Service Details",
+      "type": "group",
+      "required": true,
+      "item": [
+        {
+          "linkId": "service-date",
+          "text": "Proposed Service Date",
+          "type": "date",
+          "required": true
+        },
+        {
+          "linkId": "cpt-codes",
+          "text": "CPT Code(s)",
+          "type": "string",
+          "required": true,
+          "repeats": true
+        },
+        {
+          "linkId": "diagnosis-codes",
+          "text": "Primary Diagnosis Code(s)",
+          "type": "string",
+          "required": true,
+          "repeats": true
+        },
+        {
+          "linkId": "service-urgency",
+          "text": "Service Urgency",
+          "type": "choice",
+          "required": true,
+          "answerOption": [
+            {"valueString": "Emergency"},
+            {"valueString": "Urgent"},
+            {"valueString": "Routine"}
+          ]
+        }
+      ]
+    },
+    {
+      "linkId": "clinical-justification",
+      "text": "Clinical Justification",
+      "type": "group",
+      "required": true,
+      "item": [
+        {
+          "linkId": "medical-necessity",
+          "text": "Medical Necessity Statement",
+          "type": "text",
+          "required": true
+        },
+        {
+          "linkId": "conservative-treatments",
+          "text": "Have conservative treatments been tried?",
+          "type": "boolean",
+          "required": true
+        },
+        {
+          "linkId": "conservative-details",
+          "text": "If yes, please describe conservative treatments attempted",
+          "type": "text",
+          "enableWhen": [
+            {
+              "question": "conservative-treatments",
+              "operator": "=",
+              "answerBoolean": true
+            }
+          ]
+        },
+        {
+          "linkId": "contraindications",
+          "text": "Are there any contraindications to alternative treatments?",
+          "type": "boolean",
+          "required": true
+        },
+        {
+          "linkId": "contraindication-details",
+          "text": "If yes, please describe contraindications",
+          "type": "text",
+          "enableWhen": [
+            {
+              "question": "contraindications",
+              "operator": "=",
+              "answerBoolean": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "linkId": "provider-info",
+      "text": "Provider Information",
+      "type": "group",
+      "required": true,
+      "item": [
+        {
+          "linkId": "provider-npi",
+          "text": "Provider NPI",
+          "type": "string",
+          "required": true
+        },
+        {
+          "linkId": "facility-npi",
+          "text": "Facility NPI",
+          "type": "string",
+          "required": false
+        },
+        {
+          "linkId": "network-status",
+          "text": "Provider Network Status",
+          "type": "choice",
+          "required": true,
+          "answerOption": [
+            {"valueString": "In-Network"},
+            {"valueString": "Out-of-Network"},
+            {"valueString": "Unknown"}
+          ]
+        }
+      ]
+    },
+    {
+      "linkId": "nsa-compliance",
+      "text": "No Surprises Act Compliance",
+      "type": "group",
+      "required": true,
+      "item": [
+        {
+          "linkId": "good-faith-estimate",
+          "text": "Has a Good Faith Estimate been provided to the patient?",
+          "type": "boolean",
+          "required": true
+        },
+        {
+          "linkId": "emergency-service",
+          "text": "Is this an emergency service?",
+          "type": "boolean",
+          "required": true
+        },
+        {
+          "linkId": "notice-consent",
+          "text": "If out-of-network, has appropriate notice and consent been obtained?",
+          "type": "boolean",
+          "enableWhen": [
+            {
+              "question": "network-status",
+              "operator": "=",
+              "answerString": "Out-of-Network"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
