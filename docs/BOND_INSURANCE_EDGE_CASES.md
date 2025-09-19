@@ -40,7 +40,7 @@ Bond insurance presents unique challenges requiring specialized handling beyond 
 #### 2. Pension Obligation Bond Complications
 **Underfunded Pension Crisis**
 - **Risk Factor**: Pension obligations exceed bond proceeds
-- **Insurance Exposure**: Double financial strain on municipality  
+- **Insurance Exposure**: Double financial strain on municipality
 - **Monitoring**: Actuarial reporting, pension fund performance
 - **Early Warning**: Contribution skip patterns, assumption changes
 
@@ -97,7 +97,7 @@ Bond insurance presents unique challenges requiring specialized handling beyond 
 #### 1. Rating Methodology Changes
 **Mid-Life Rating Criteria Updates**
 - **Impact**: Existing portfolio revaluation
-- **Insurance Response**: Coverage adjustment considerations  
+- **Insurance Response**: Coverage adjustment considerations
 - **Market Impact**: Secondary market pricing effects
 - **Communication**: Investor notification requirements
 
@@ -220,7 +220,7 @@ Bond insurance presents unique challenges requiring specialized handling beyond 
 - **Political**: Election results, management changes, policy shifts
 - **Operational**: Service delivery, infrastructure maintenance
 
-#### 2. Structured Finance Indicators  
+#### 2. Structured Finance Indicators
 - **Collateral Performance**: Delinquency rates, loss severity
 - **Market Conditions**: Interest rate environment, credit spreads
 - **Structural Integrity**: Credit enhancement levels, trigger events
@@ -248,7 +248,7 @@ Bond insurance presents unique challenges requiring specialized handling beyond 
 
 #### 1. Municipal Data Requirements
 - **Financial Reporting**: CAFR analysis, budget documents
-- **Economic Data**: Census data, employment statistics  
+- **Economic Data**: Census data, employment statistics
 - **Credit Ratings**: Municipal rating surveillance
 - **Market Data**: Municipal bond pricing, trading volumes
 

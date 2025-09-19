@@ -6,7 +6,7 @@ This document provides comprehensive AI prompt templates designed for insurance 
 ## Template Categories
 
 ### 1. Underwriting AI Prompts
-### 2. Claims Processing AI Prompts  
+### 2. Claims Processing AI Prompts
 ### 3. Customer Service AI Prompts
 ### 4. Compliance and Regulatory AI Prompts
 ### 5. Bond Insurance Specialized Prompts
@@ -26,7 +26,7 @@ You are an expert insurance underwriter analyzing a new application for coverage
 
 ## Input Data
 **Coverage Type**: {coverage_type}
-**Policy Limits**: {policy_limits}  
+**Policy Limits**: {policy_limits}
 **Deductible**: {deductible}
 **Applicant Profile**: {applicant_data}
 **Property/Asset Details**: {property_details}
@@ -194,7 +194,7 @@ Evaluate if the loss satisfies policy trigger requirements:
 - **Location Coverage**: Is loss location covered under policy terms?
 - **Cause of Loss**: Is the cause of loss covered (not excluded)?
 
-### 2. Exclusion Analysis  
+### 2. Exclusion Analysis
 Review all potentially applicable exclusions:
 - **General Exclusions**: Standard policy exclusions
 - **Specific Exclusions**: Coverage-specific exclusions
@@ -204,7 +204,7 @@ Review all potentially applicable exclusions:
 ### 3. Policy Limit Analysis
 Determine applicable coverage limits:
 - **Per-Occurrence Limits**: Maximum per claim
-- **Aggregate Limits**: Annual/policy period maximums  
+- **Aggregate Limits**: Annual/policy period maximums
 - **Sub-limits**: Specific coverage category limits
 - **Shared Limits**: Multiple coverage interactions
 
@@ -256,7 +256,7 @@ Conduct thorough investigation to verify claim legitimacy and determine appropri
 **Basic Claim Data**:
 - Claim ID: {claim_id}
 - Claimant: {claimant_name}
-- Policy Number: {policy_number}  
+- Policy Number: {policy_number}
 - Date of Loss: {loss_date}
 - Reported Date: {report_date}
 - Loss Description: {loss_summary}
@@ -446,7 +446,7 @@ Explain how provisions affect the customer:
 
 **Related Coverage**: [Connected policy provisions]
 
-**Your Options**: [Available choices or alternatives]  
+**Your Options**: [Available choices or alternatives]
 
 **Next Steps**: [Recommended actions]
 
@@ -508,7 +508,7 @@ Provide clear, empathetic, and informative updates on claim status while managin
 
 **Status Categories**:
 - Under Investigation
-- Pending Documentation  
+- Pending Documentation
 - Coverage Review
 - Settlement Pending
 - Payment Processing
@@ -530,12 +530,12 @@ Provide clear, empathetic, and informative updates on claim status while managin
 
 **Estimated Timeline**: [Realistic timeframe for next update]"
 
-### Documentation Phase  
+### Documentation Phase
 "We're reviewing the documentation for your claim:
 
 **Documents Received**: [List of received items]
 - [Document 1] ✓
-- [Document 2] ✓  
+- [Document 2] ✓
 - [Document 3] ⏳ Pending
 
 **Outstanding Items**: [What's still needed]
@@ -571,7 +571,7 @@ Provide clear, empathetic, and informative updates on claim status while managin
 - Deductible: ${deductible}
 - Net Settlement: ${net_settlement}
 
-**Payment Processing**: 
+**Payment Processing**:
 - Settlement documents: [Status]
 - Payment method: [Check/Direct Deposit]
 - Expected payment date: [Date]
@@ -754,7 +754,7 @@ Review for required standard provisions:
    - Corrective actions: {required_fixes}
 
 2. **Form and Rate Compliance**
-   - Status: {compliant/non-compliant}  
+   - Status: {compliant/non-compliant}
    - Issues found: {specific_violations}
    - Corrective actions: {required_fixes}
 
@@ -825,7 +825,7 @@ Conduct comprehensive credit analysis for municipal bond insurance application, 
 
 **Economic Indicators**:
 - Unemployment rate vs. state/national: {unemployment_comparison}
-- Median household income vs. state: {income_comparison}  
+- Median household income vs. state: {income_comparison}
 - Property tax base growth: {tax_base_trend}
 - Commercial/industrial diversity: {diversity_score}
 
@@ -928,7 +928,7 @@ Identify negative credit factors:
 
 **Default Probability Assessment**:
 - 1-year: {1yr_default_prob}%
-- 5-year: {5yr_default_prob}%  
+- 5-year: {5yr_default_prob}%
 - 10-year: {10yr_default_prob}%
 - Life-of-bond: {cumulative_default_prob}%
 
@@ -1000,7 +1000,7 @@ Conduct multi-dimensional risk analysis incorporating traditional insurance risk
 ### 1. Traditional Insurance Risks
 **Property Risks**:
 - Physical asset exposure
-- Natural catastrophe vulnerability  
+- Natural catastrophe vulnerability
 - Fire, theft, vandalism exposure
 - Business interruption potential
 
@@ -1138,7 +1138,7 @@ For each identified risk, evaluate:
 ### Key Risk Indicators (KRIs)
 Define measurable indicators for each major risk:
 - Leading indicators (predictive)
-- Lagging indicators (confirmatory)  
+- Lagging indicators (confirmatory)
 - Threshold levels for action
 - Reporting frequency requirements
 

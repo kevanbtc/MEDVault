@@ -10,7 +10,7 @@ This documentation provides a comprehensive insurance system framework that cove
 
 1. **[README.md](../README.md)** - Main system overview and comprehensive insurance machine documentation
    - Insurance stack architecture
-   - Coverage flow engine  
+   - Coverage flow engine
    - Stakeholder mapping
    - Edge case handling
    - Bond insurance specifics
