@@ -131,7 +131,7 @@
     "quantityLimits": [
       {
         "drug": "zolpidem",
-        "limit": "30 tablets",
+        "limit": { "quantity": 30, "unit": "tablets" },
         "timeframe": "30 days"
       }
     ]
