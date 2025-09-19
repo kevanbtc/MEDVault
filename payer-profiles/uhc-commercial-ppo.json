@@ -1,0 +1,207 @@
+{
+  "payerId": "uhc-commercial-ppo-001",
+  "payerName": "UnitedHealthcare Commercial PPO",
+  "payerType": "commercial",
+  "planType": "ppo",
+  "benefitDesign": {
+    "deductible": {
+      "individual": 1500,
+      "family": 3000,
+      "embedded": true
+    },
+    "oopMax": {
+      "individual": 6000,
+      "family": 12000
+    },
+    "copayStructure": {
+      "primaryCare": 25,
+      "specialist": 50,
+      "emergency": 250,
+      "urgentCare": 75,
+      "inpatient": 500,
+      "outpatientSurgery": 250
+    },
+    "coinsurance": {
+      "inNetwork": 0.2,
+      "outOfNetwork": 0.4
+    }
+  },
+  "umRules": {
+    "preAuthRequired": [
+      {
+        "serviceCategory": "Advanced Imaging",
+        "cptCodes": ["70450", "70460", "70470", "71250", "71260", "71270", "72125", "72126", "72127"],
+        "criteria": "Prior authorization required for CT, MRI, PET scans unless emergency",
+        "expeditedAvailable": true
+      },
+      {
+        "serviceCategory": "Inpatient Admissions",
+        "cptCodes": ["99221", "99222", "99223"],
+        "criteria": "All non-emergency inpatient admissions require pre-certification",
+        "expeditedAvailable": true
+      },
+      {
+        "serviceCategory": "Oncology",
+        "cptCodes": ["96365", "96366", "96367", "96413", "96415"],
+        "criteria": "Chemotherapy regimens require prior authorization per NCCN guidelines",
+        "expeditedAvailable": true
+      }
+    ],
+    "siteOfServiceSteering": {
+      "preferredSites": [
+        {
+          "service": "Colonoscopy",
+          "preferred": "asc",
+          "incentive": "$0 copay at ASC vs $250 at hospital"
+        },
+        {
+          "service": "Cataract Surgery",
+          "preferred": "asc",
+          "incentive": "Lower coinsurance at ASC"
+        }
+      ]
+    },
+    "medicalNecessityCriteria": {
+      "source": "interqual",
+      "version": "2024.1",
+      "lastUpdated": "2024-01-01"
+    }
+  },
+  "network": {
+    "networkType": "open",
+    "oonCoverage": {
+      "emergency": true,
+      "regular": true,
+      "balanceBilling": false
+    },
+    "nsaApplicable": {
+      "emergency": true,
+      "facilityAncillary": true,
+      "airAmbulance": true,
+      "groundAmbulance": false
+    }
+  },
+  "formulary": {
+    "tiers": [
+      {
+        "tier": 1,
+        "description": "Generic",
+        "copay": 10,
+        "coinsurance": 0
+      },
+      {
+        "tier": 2,
+        "description": "Preferred Brand",
+        "copay": 40,
+        "coinsurance": 0
+      },
+      {
+        "tier": 3,
+        "description": "Non-Preferred Brand",
+        "copay": 70,
+        "coinsurance": 0
+      },
+      {
+        "tier": 4,
+        "description": "Specialty",
+        "copay": 0,
+        "coinsurance": 0.25
+      }
+    ],
+    "stepTherapy": [
+      {
+        "drugClass": "ACE Inhibitors",
+        "steps": ["lisinopril", "enalapril", "ramipril"],
+        "exceptionCriteria": "Documented intolerance or contraindication"
+      },
+      {
+        "drugClass": "TNF Inhibitors",
+        "steps": ["methotrexate", "sulfasalazine", "adalimumab"],
+        "exceptionCriteria": "Inadequate response or contraindication to prior steps"
+      }
+    ],
+    "priorAuth": [
+      {
+        "drug": "pembrolizumab",
+        "ndc": "00006-3026-02",
+        "criteria": "FDA-approved indication with appropriate biomarker testing",
+        "duration": "6 months"
+      }
+    ],
+    "quantityLimits": [
+      {
+        "drug": "zolpidem",
+        "limit": { "quantity": 30, "unit": "tablets" },
+        "timeframe": "30 days"
+      }
+    ]
+  },
+  "cob": {
+    "primaryRules": [
+      "Birthday rule for dependents",
+      "Active coverage over COBRA",
+      "Employee coverage over spouse coverage"
+    ],
+    "mspRules": {
+      "esrdCoordination": false,
+      "largeEmployerException": true
+    },
+    "subrogationRights": true
+  },
+  "exclusions": {
+    "experimental": {
+      "definition": "Services not approved by FDA or not supported by peer-reviewed literature",
+      "compendiaAccepted": ["NCCN", "DRUGDEX", "AHFS-DI"],
+      "clinicalTrialCoverage": true
+    },
+    "cosmetic": {
+      "exceptions": ["Post-mastectomy reconstruction", "Cleft palate repair", "Burn reconstruction"]
+    },
+    "custodialCare": false,
+    "preExisting": {
+      "applicable": false,
+      "lookbackPeriod": null,
+      "waitingPeriod": null
+    }
+  },
+  "appeals": {
+    "internalLevels": 2,
+    "timeframes": {
+      "standard": "30 days",
+      "expedited": "72 hours"
+    },
+    "externalReview": {
+      "available": true,
+      "iroAssigned": true,
+      "timeframe": "60 days"
+    }
+  },
+  "paymentModel": "ffs",
+  "qualityPrograms": [
+    {
+      "program": "HEDIS",
+      "measures": ["Colorectal Cancer Screening", "Breast Cancer Screening", "Diabetes Care"],
+      "incentives": "Provider bonuses for quality metrics"
+    }
+  ],
+  "bonds": {
+    "dmeposBond": {
+      "required": false,
+      "amount": 0,
+      "carrier": null
+    },
+    "tpaBond": {
+      "required": true,
+      "amount": 100000,
+      "type": "surety"
+    },
+    "performanceBonds": []
+  },
+  "metadata": {
+    "version": "2024.1",
+    "lastUpdated": "2024-01-01",
+    "source": "UHC Plan Document 2024",
+    "effectiveDate": "2024-01-01",
+    "expirationDate": "2024-12-31"
+  }
+}
