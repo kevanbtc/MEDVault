@@ -19,28 +19,28 @@ This documentation provides a comprehensive insurance system framework that cove
 
 ### Specialized Documentation
 
-2. **[ARCHITECTURE.md](ARCHITECTURE.md)** - System architecture and technical design
+1. **[ARCHITECTURE.md](ARCHITECTURE.md)** - System architecture and technical design
    - Layered architecture overview
    - Security framework
    - Technology stack
    - Scalability design
    - Disaster recovery
 
-3. **[BOND_INSURANCE_EDGE_CASES.md](BOND_INSURANCE_EDGE_CASES.md)** - Bond insurance specialization
+2. **[BOND_INSURANCE_EDGE_CASES.md](BOND_INSURANCE_EDGE_CASES.md)** - Bond insurance specialization
    - Municipal bond insurance complexities
    - Structured finance edge cases
    - Regulatory complications
    - Stakeholder dynamics
    - Special handling procedures
 
-4. **[AI_PROMPT_TEMPLATES.md](AI_PROMPT_TEMPLATES.md)** - AI prompt engineering for insurance
+3. **[AI_PROMPT_TEMPLATES.md](AI_PROMPT_TEMPLATES.md)** - AI prompt engineering for insurance
    - Underwriting AI prompts
    - Claims processing AI prompts
    - Customer service AI prompts
    - Compliance AI prompts
    - Risk assessment AI prompts
 
-5. **[RULES_AND_FORMS_FRAMEWORK.md](RULES_AND_FORMS_FRAMEWORK.md)** - Automation framework
+4. **[RULES_AND_FORMS_FRAMEWORK.md](RULES_AND_FORMS_FRAMEWORK.md)** - Automation framework
    - Rules engine architecture
    - Form templates
    - Validation engine
