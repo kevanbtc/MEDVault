@@ -4,6 +4,16 @@
 
 MEDVault is a comprehensive insurance machine documentation system that maps out every gear, gremlin, and edge case in insurance coverage. This system provides a senior-engineer-ready foundation for generating rules, forms, and AI prompts without guesswork.
 
+### Documentation Structure
+
+This README provides the main system overview. For detailed implementation guidance, see the specialized documentation in the [`docs/`](docs/) directory:
+
+- **[Architecture Guide](docs/ARCHITECTURE.md)** - System architecture and technical design
+- **[Bond Insurance Specifics](docs/BOND_INSURANCE_EDGE_CASES.md)** - Specialized bond insurance handling
+- **[AI Prompt Templates](docs/AI_PROMPT_TEMPLATES.md)** - Production-ready AI prompts for insurance operations
+- **[Rules & Forms Framework](docs/RULES_AND_FORMS_FRAMEWORK.md)** - Automation framework and form templates
+- **[Documentation Index](docs/INDEX.md)** - Complete documentation overview and usage guide
+
 ## Table of Contents
 
 1. [Insurance Stack Architecture](#insurance-stack-architecture)
@@ -13,6 +23,8 @@ MEDVault is a comprehensive insurance machine documentation system that maps out
 5. [Bond Insurance Specifics](#bond-insurance-specifics)
 6. [Rules & Forms Framework](#rules--forms-framework)
 7. [AI Prompt Templates](#ai-prompt-templates)
+8. [Implementation Guidelines](#implementation-guidelines)
+9. [Maintenance and Evolution](#maintenance-and-evolution)
 
 ---
 
@@ -511,4 +523,4 @@ Provide risk score with confidence intervals and action plan.
 
 ---
 
-*This documentation serves as the foundation for building a comprehensive insurance machine that handles every aspect of insurance operations from application to claim settlement, with particular attention to edge cases and stakeholder needs.*
+*This documentation serves as the foundation for building a comprehensive insurance machine that handles every aspect of insurance operations from application to claim settlement, with particular attention to edge cases and stakeholder needs. For implementation details, system architecture, and specialized components, refer to the [complete documentation suite](docs/INDEX.md).*
