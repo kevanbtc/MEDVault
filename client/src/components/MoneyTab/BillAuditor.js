@@ -354,9 +354,13 @@ const BillAuditor = () => {
 
               <div className="flex justify-end space-x-3">
                 <button
-                  onClick={() => {
-                    navigator.clipboard.writeText(showDisputeLetter.disputeLetter);
-                    alert('Letter copied to clipboard!');
+                  onClick={async () => {
+                    try {
+                      await navigator.clipboard.writeText(showDisputeLetter.disputeLetter);
+                      alert('Letter copied to clipboard!');
+                    } catch (err) {
+                      alert('Failed to copy letter to clipboard. Please try again.');
+                    }
                   }}
                   className="btn-secondary"
                 >
